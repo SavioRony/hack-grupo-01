@@ -8,6 +8,8 @@ import br.com.fiap.hackgrupo01.model.dto.hospedagem.*;
 import br.com.fiap.hackgrupo01.model.hospedagem.Hospedagem;
 import br.com.fiap.hackgrupo01.model.hospedagem.Predio;
 import br.com.fiap.hackgrupo01.repository.HospedagemRepository;
+import br.com.fiap.hackgrupo01.repository.PredioRepository;
+import br.com.fiap.hackgrupo01.repository.QuartoRepository;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,10 @@ import java.util.List;
 public class HospedagemServiceImpl implements HospedagemService {
 
     private final HospedagemRepository repository;
+
+    private final QuartoRepository quartoRepository;
+
+    private final PredioRepository predioRepository;
 
     private final HospedagemMapper hospedagemMapper;
 
@@ -120,5 +126,33 @@ public class HospedagemServiceImpl implements HospedagemService {
                 });
         hospedagem.alteracaoQuarto(idQuarto, request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));
+    }
+
+    @Override
+    public void deleteHospedagem(Long idHospedagem) {
+        repository.findById(idHospedagem)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada, id invalido!");
+                });
+        repository.deleteById(idHospedagem);
+    }
+
+    @Override
+    public void deletePredio(Long idPredio) {
+        repository.findByPredioId(idPredio)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada ou id do predio invalido!");
+                });
+        predioRepository.deleteById(idPredio);
+    }
+
+    @Override
+    public void deleteQuarto(Long idQuarto) {
+        repository.findByQuartoId(idQuarto)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada ou id do quarto invalido!");
+                });
+
+        quartoRepository.deleteById(idQuarto);
     }
 }

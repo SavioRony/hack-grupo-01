@@ -16,4 +16,7 @@ public interface HospedagemService {
     HospedagemResponse alteracaoHospedagem(Long idHospedagem, HospedagemRequest request);
     HospedagemResponse alteracaoPredio(Long idPredio, PredioUpdateRequest request);
     HospedagemResponse alteracaoQuarto(Long idQuarto, QuartoUpdateRequest request);
+    void deleteHospedagem(Long idHospedagem);
+    void deletePredio(Long idPredio);
+    void deleteQuarto(Long idQuarto);
 }

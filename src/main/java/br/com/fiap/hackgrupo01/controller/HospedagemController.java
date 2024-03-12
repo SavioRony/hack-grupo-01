@@ -58,4 +58,19 @@ public class HospedagemController {
                                              @RequestBody @Valid QuartoUpdateRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(service.alteracaoQuarto(idQuarto, request));
     }
+    @DeleteMapping("/{idHospedagem}")
+    public ResponseEntity<?> alteracaoStatusHospedagem(@PathVariable Long idHospedagem){
+        service.deleteHospedagem(idHospedagem);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @DeleteMapping("/predio/{idPredio}")
+    public ResponseEntity<?> alteracaoStatusPredio(@PathVariable Long idPredio){
+        service.deletePredio(idPredio);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @DeleteMapping("/quarto/{idQuarto}")
+    public ResponseEntity<?> alteracaoStatusQuarto(@PathVariable Long idQuarto){
+        service.deleteQuarto(idQuarto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
