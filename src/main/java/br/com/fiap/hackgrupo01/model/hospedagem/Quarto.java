@@ -1,5 +1,6 @@
 package br.com.fiap.hackgrupo01.model.hospedagem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +27,6 @@ public class Quarto {
     private List<String> outrosMoveis;
     @ManyToOne
     @JoinColumn(name = "predio_id")
+    @JsonIgnore
     private Predio predio;
 }

@@ -2,6 +2,7 @@ package br.com.fiap.hackgrupo01.controller;
 
 import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequest;
 import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioRequest;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoRequest;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,9 @@ public class HospedagemController {
     @PostMapping("/predio")
     public ResponseEntity<?> cadastroPredio(@RequestBody PredioRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastroPredio(request));
+    }
+    @PostMapping("/quarto")
+    public ResponseEntity<?> cadastroPredio(@RequestBody QuartoRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastroQuarto(request));
     }
 }

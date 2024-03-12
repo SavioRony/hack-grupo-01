@@ -53,5 +53,4 @@ public class RestExceptionHandler {
                 .build(), HttpStatus.NOT_FOUND);
     }
 
-
 }
