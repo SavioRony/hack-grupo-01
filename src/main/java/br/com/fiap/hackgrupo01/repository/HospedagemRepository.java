@@ -13,4 +13,8 @@ public interface HospedagemRepository extends JpaRepository<Hospedagem, Long> {
 
     @Query("SELECT h FROM Hospedagem h JOIN h.predios p WHERE p.id = :predioId")
     Optional<Hospedagem> findByPredioId(@Param("predioId") Long predioId);
+
+    @Query("SELECT h FROM Hospedagem h JOIN h.predios p JOIN p.quartos q WHERE q.id = :quartoId")
+    Optional<Hospedagem> findByQuartoId(@Param("quartoId") Long quartoId);
+
 }

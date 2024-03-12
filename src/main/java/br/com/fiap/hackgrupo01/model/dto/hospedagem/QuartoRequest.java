@@ -1,8 +1,10 @@
 package br.com.fiap.hackgrupo01.model.dto.hospedagem;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -11,9 +13,10 @@ import java.util.List;
 public class QuartoRequest {
     @NotBlank(message = "Não pode ser nulo ou vazio")
     private String tipo;
-    @Size(min = 1, message = "Quantidade minima de pessoas permitido é 1")
+    @Min(value = 1, message = "Quantidade minima de pessoas permitido é 1")
     private int totalPessoas;
-    @NotBlank(message = "Não pode ser nulo ou vazio")
+    @NotNull(message = "A lista de camas não pode ser nula")
+    @NotEmpty(message = "A lista de camas não pode ser vazia")
     private List<String> camas;
     private List<String> outrosMoveis;
     @Valid
