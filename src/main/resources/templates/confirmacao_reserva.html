@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Reserva de Hospedagem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .reservation-details {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Confirmação de Reserva de Hospedagem</h1>
+    <p>Obrigado por escolher o nosso hotel para a sua estadia!</p>
+    <div class="reservation-details">
+        <p><strong>Nome do Hóspede:</strong> {nome_do_hospede}</p>
+        <p><strong>Email de Contato:</strong> {email_do_hospede}</p>
+        <p><strong>Data de Check-in:</strong> {data_check_in}</p>
+        <p><strong>Data de Check-out:</strong> {data_check_out}</p>
+        <p><strong>Quarto Reservado:</strong> {tipo_de_quarto}</p>
+        <p><strong>Número de Hóspedes:</strong> {numero_de_hospedes}</p>
+    </div>
+    <p>Por favor, entre em contato conosco se precisar fazer alguma alteração na sua reserva ou se tiver alguma dúvida.</p>
+    <p>Obrigado novamente por escolher o nosso hotel. Esperamos que tenha uma estadia agradável!</p>
+</div>
+</body>
+</html>
