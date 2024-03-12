@@ -76,10 +76,10 @@ class HospedagemServiceImplTest {
         long idHospedagem = 1L;
         PredioRequest request = new PredioRequest();
         HospedagemRequestId hospedagemRequestId = new HospedagemRequestId();
-        hospedagemRequestId.setId(1L);
+        hospedagemRequestId.setId(idHospedagem);
         request.setHospedagem(hospedagemRequestId);
         Hospedagem hospedagem = new Hospedagem();
-        when(repository.getReferenceById(idHospedagem)).thenReturn(hospedagem);
+        when(repository.findById(idHospedagem)).thenReturn(Optional.of(hospedagem)); // Alteração aqui
         Predio predio = new Predio();
         when(predioMapper.toModel(request)).thenReturn(predio);
         when(repository.save(hospedagem)).thenReturn(hospedagem);

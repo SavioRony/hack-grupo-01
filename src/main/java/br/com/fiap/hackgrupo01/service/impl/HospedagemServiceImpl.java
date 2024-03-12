@@ -11,7 +11,6 @@ import br.com.fiap.hackgrupo01.repository.HospedagemRepository;
 import br.com.fiap.hackgrupo01.repository.PredioRepository;
 import br.com.fiap.hackgrupo01.repository.QuartoRepository;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,21 +40,14 @@ public class HospedagemServiceImpl implements HospedagemService {
 
     @Override
     public HospedagemResponse cadastroPredio(PredioRequest predioRequest) {
-        try {
-            Hospedagem hospedagem = repository.getReferenceById(predioRequest.getHospedagem().getId());
-            hospedagem.getPredios().add(predioMapper.toModel(predioRequest));
-            return hospedagemMapper.toResponse(repository.save(hospedagem));
-        } catch (EntityNotFoundException e) {
-            throw new NotFoundException("Hospedagem não encontrada, id invalido!");
-        }
+        Hospedagem hospedagem = findById(predioRequest.getHospedagem().getId());
+        hospedagem.getPredios().add(predioMapper.toModel(predioRequest));
+        return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
     public HospedagemResponse cadastroQuarto(QuartoRequest request) {
-        Hospedagem hospedagem = repository.findByPredioId(request.getPredio().getId())
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Predio não encontrado, id invalido!");
-                });
+        Hospedagem hospedagem = findByPredioId(request.getPredio().getId());
         for (Predio predio : hospedagem.getPredios()) {
             if (predio.getId().equals(request.getPredio().getId())) {
                 predio.getQuartos().add(quartoMapper.toModel(request));
@@ -72,87 +64,79 @@ public class HospedagemServiceImpl implements HospedagemService {
 
     @Override
     public HospedagemResponse getHospedagemById(Long idHospedagem) {
-        Hospedagem hospedagem = repository.findById(idHospedagem)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada, id invalido!");
-                });
+        Hospedagem hospedagem = findById(idHospedagem);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
     public HospedagemResponse getHospedagemByIdPredio(Long idPredio) {
-        Hospedagem hospedagem = repository.findByPredioId(idPredio)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada ou id do predio invalido!");
-                });
+        Hospedagem hospedagem = findByPredioId(idPredio);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
     public HospedagemResponse getHospedagemByIdQuarto(Long idQuarto) {
-        Hospedagem hospedagem = repository.findByQuartoId(idQuarto)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada ou id do quarto invalido!");
-                });
+        Hospedagem hospedagem = findByQuartoId(idQuarto);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
     public HospedagemResponse alteracaoHospedagem(Long idHospedagem, HospedagemRequest request) {
-        Hospedagem hospedagem = repository.findById(idHospedagem)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada, id invalido!");
-                });
-
+        Hospedagem hospedagem = findById(idHospedagem);
         hospedagem.alteracaoHospedagem(request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
     public HospedagemResponse alteracaoPredio(Long idPredio, PredioUpdateRequest request) {
-        Hospedagem hospedagem = repository.findByPredioId(idPredio)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada ou id do predio invalido!");
-                });
+        Hospedagem hospedagem = findByPredioId(idPredio);
         hospedagem.alteracaoPredio(idPredio, request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
     public HospedagemResponse alteracaoQuarto(Long idQuarto, QuartoUpdateRequest request) {
-        Hospedagem hospedagem = repository.findByQuartoId(idQuarto)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada ou id do quarto invalido!");
-                });
+        Hospedagem hospedagem = findByQuartoId(idQuarto);
         hospedagem.alteracaoQuarto(idQuarto, request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
     public void deleteHospedagem(Long idHospedagem) {
-        repository.findById(idHospedagem)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada, id invalido!");
-                });
+        findById(idHospedagem);
         repository.deleteById(idHospedagem);
     }
 
     @Override
     public void deletePredio(Long idPredio) {
-        repository.findByPredioId(idPredio)
-                .orElseThrow(() -> {
-                    throw new NotFoundException("Hospedagem não encontrada ou id do predio invalido!");
-                });
+        findByPredioId(idPredio);
         predioRepository.deleteById(idPredio);
     }
 
     @Override
     public void deleteQuarto(Long idQuarto) {
-        repository.findByQuartoId(idQuarto)
+        findByQuartoId(idQuarto);
+        quartoRepository.deleteById(idQuarto);
+    }
+
+    private Hospedagem findByPredioId(Long idPredio) {
+        return repository.findByPredioId(idPredio)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada ou id do predio invalido!");
+                });
+    }
+
+    private Hospedagem findById(Long idHospedagem) {
+        return repository.findById(idHospedagem)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada, id invalido!");
+                });
+    }
+
+    private Hospedagem findByQuartoId(Long idQuarto) {
+        return repository.findByQuartoId(idQuarto)
                 .orElseThrow(() -> {
                     throw new NotFoundException("Hospedagem não encontrada ou id do quarto invalido!");
                 });
-
-        quartoRepository.deleteById(idQuarto);
     }
 }
