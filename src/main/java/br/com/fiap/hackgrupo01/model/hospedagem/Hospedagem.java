@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name = "tb_hospedagem")
@@ -19,10 +20,10 @@ public class Hospedagem {
     private Long id;
     private String nome;
     @ElementCollection
-    private List<String> amenidades;
+    private List<String> amenidades = new ArrayList<>();
     @Embedded
     private Endereco endereco;
     @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL)
-    private List<Predio> predios;
+    private List<Predio> predios = new ArrayList<>();
 
 }
