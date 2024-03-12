@@ -1,9 +1,6 @@
 package br.com.fiap.hackgrupo01.service;
 
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponse;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoRequest;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.*;
 
 import java.util.List;
 
@@ -15,6 +12,8 @@ public interface HospedagemService {
     List<HospedagemResponse> getHospedagens();
     HospedagemResponse getHospedagemById(Long idHospedagem);
     HospedagemResponse getHospedagemByIdPredio(Long idPredio);
-
     HospedagemResponse getHospedagemByIdQuarto(Long idQuarto);
+    HospedagemResponse alteracaoHospedagem(Long idHospedagem, HospedagemRequest request);
+    HospedagemResponse alteracaoPredio(Long idPredio, PredioUpdateRequest request);
+    HospedagemResponse alteracaoQuarto(Long idQuarto, QuartoUpdateRequest request);
 }

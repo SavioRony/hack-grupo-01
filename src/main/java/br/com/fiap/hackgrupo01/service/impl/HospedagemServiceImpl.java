@@ -4,10 +4,7 @@ import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.HospedagemMapper;
 import br.com.fiap.hackgrupo01.mapper.PredioMapper;
 import br.com.fiap.hackgrupo01.mapper.QuartoMapper;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponse;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoRequest;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.*;
 import br.com.fiap.hackgrupo01.model.hospedagem.Hospedagem;
 import br.com.fiap.hackgrupo01.model.hospedagem.Predio;
 import br.com.fiap.hackgrupo01.repository.HospedagemRepository;
@@ -92,5 +89,36 @@ public class HospedagemServiceImpl implements HospedagemService {
                     throw new NotFoundException("Hospedagem não encontrada ou id do quarto invalido!");
                 });
         return hospedagemMapper.toResponse(hospedagem);
+    }
+
+    @Override
+    public HospedagemResponse alteracaoHospedagem(Long idHospedagem, HospedagemRequest request) {
+        Hospedagem hospedagem = repository.findById(idHospedagem)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada, id invalido!");
+                });
+
+        hospedagem.alteracaoHospedagem(request);
+        return hospedagemMapper.toResponse(repository.save(hospedagem));
+    }
+
+    @Override
+    public HospedagemResponse alteracaoPredio(Long idPredio, PredioUpdateRequest request) {
+        Hospedagem hospedagem = repository.findByPredioId(idPredio)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada ou id do predio invalido!");
+                });
+        hospedagem.alteracaoPredio(idPredio, request);
+        return hospedagemMapper.toResponse(repository.save(hospedagem));
+    }
+
+    @Override
+    public HospedagemResponse alteracaoQuarto(Long idQuarto, QuartoUpdateRequest request) {
+        Hospedagem hospedagem = repository.findByQuartoId(idQuarto)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Hospedagem não encontrada ou id do quarto invalido!");
+                });
+        hospedagem.alteracaoQuarto(idQuarto, request);
+        return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 }

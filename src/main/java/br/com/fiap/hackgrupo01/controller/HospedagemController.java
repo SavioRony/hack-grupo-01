@@ -1,8 +1,6 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoRequest;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.*;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,6 @@ public class HospedagemController {
     public ResponseEntity<?> getHospedagens(){
         return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagens());
     }
-
     @GetMapping("/{idHospedagem}")
     public ResponseEntity<?> getHospedagemById(@PathVariable Long idHospedagem){
         return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagemById(idHospedagem));
@@ -45,5 +42,20 @@ public class HospedagemController {
     @GetMapping("/quarto/{idQuarto}")
     public ResponseEntity<?> getHospedagemByIdQuarto(@PathVariable Long idQuarto){
         return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagemByIdQuarto(idQuarto));
+    }
+    @PutMapping("/{idHospedagem}")
+    public ResponseEntity<?> alteracaoHospedagem(@PathVariable Long idHospedagem,
+                                                 @RequestBody @Valid HospedagemRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(service.alteracaoHospedagem(idHospedagem,request));
+    }
+    @PutMapping("/predio/{idPredio}")
+    public ResponseEntity<?> alteracaoPredio(@PathVariable Long idPredio,
+                                             @RequestBody @Valid PredioUpdateRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(service.alteracaoPredio(idPredio , request));
+    }
+    @PutMapping("/quarto/{idQuarto}")
+    public ResponseEntity<?> alteracaoQuarto(@PathVariable Long idQuarto,
+                                             @RequestBody @Valid QuartoUpdateRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(service.alteracaoQuarto(idQuarto, request));
     }
 }
