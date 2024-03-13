@@ -23,33 +23,32 @@ public class ClienteController {
 
     @GetMapping
     @Operation(summary = "Buscar todos os clientes")
-    ResponseEntity<List<ClienteDTO>> findAll(){
+    public ResponseEntity<List<ClienteDTO>> findAll(){
         var response = service.findAll();
-
         return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar clientes por id")
-    ResponseEntity<ClienteDTO> findById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<ClienteDTO> findById(@PathVariable(name = "id") Long id){
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
     @Operation(summary = "Cadastro de Cliente")
-    ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO dto){
+    public ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO dto){
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Edição de Cliente")
-    ResponseEntity<ClienteDTO> update(@PathVariable(name = "id") Long id, @RequestBody ClienteDTO dto){
+    public ResponseEntity<ClienteDTO> update(@PathVariable(name = "id") Long id, @RequestBody ClienteDTO dto){
         return ResponseEntity.ok(service.update(dto, id));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Exclusão de Cliente")
-    ResponseEntity<?> delete(@PathVariable(name = "id") Long id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") Long id){
         service.delete(id);
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
     }
