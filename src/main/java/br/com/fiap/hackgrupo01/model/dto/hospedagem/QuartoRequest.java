@@ -19,6 +19,9 @@ public class QuartoRequest {
     @NotEmpty(message = "A lista de camas não pode ser vazia")
     private List<String> camas;
     private List<String> outrosMoveis;
+    private List<String> banheiro;
+    private Double valorDiaria;
+    private int quantidade;
     @Valid
     private PredioRequestId predio;
 }

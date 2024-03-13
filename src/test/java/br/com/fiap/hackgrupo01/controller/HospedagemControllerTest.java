@@ -73,7 +73,7 @@ class HospedagemControllerTest {
     @DisplayName("Teste para buscar todas as hospedagens")
     void testGetHospedagens() {
         List<HospedagemResponse> hospedagens = new ArrayList<>();
-        when(service.getHospedagens()).thenReturn(hospedagens);
+        when(service.buscarHospedagens()).thenReturn(hospedagens);
 
         ResponseEntity<List<HospedagemResponse>> result = controller.getHospedagens();
 
@@ -86,7 +86,7 @@ class HospedagemControllerTest {
     void testGetHospedagemById() {
         long idHospedagem = 1L;
         HospedagemResponse hospedagem = new HospedagemResponse();
-        when(service.getHospedagemById(idHospedagem)).thenReturn(hospedagem);
+        when(service.buscarHospedagemPorId(idHospedagem)).thenReturn(hospedagem);
 
         ResponseEntity<HospedagemResponse> result = controller.getHospedagemById(idHospedagem);
 
@@ -99,7 +99,7 @@ class HospedagemControllerTest {
     void testGetHospedagemByIdPredio() {
         long idPredio = 1L;
         HospedagemResponse hospedagem = new HospedagemResponse();
-        when(service.getHospedagemByIdPredio(idPredio)).thenReturn(hospedagem);
+        when(service.buscarHospedagemPorIdPredio(idPredio)).thenReturn(hospedagem);
 
         ResponseEntity<HospedagemResponse> result = controller.getHospedagemByIdPredio(idPredio);
 
@@ -112,7 +112,7 @@ class HospedagemControllerTest {
     void testGetHospedagemByIdQuarto() {
         long idQuarto = 1L;
         HospedagemResponse hospedagem = new HospedagemResponse();
-        when(service.getHospedagemByIdQuarto(idQuarto)).thenReturn(hospedagem);
+        when(service.buscarHospedagemPorIdQuarto(idQuarto)).thenReturn(hospedagem);
 
         ResponseEntity<?> result = controller.getHospedagemByIdQuarto(idQuarto);
 

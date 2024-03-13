@@ -58,24 +58,24 @@ public class HospedagemServiceImpl implements HospedagemService {
     }
 
     @Override
-    public List<HospedagemResponse> getHospedagens() {
+    public List<HospedagemResponse> buscarHospedagens() {
         return hospedagemMapper.toResponses(repository.findAll());
     }
 
     @Override
-    public HospedagemResponse getHospedagemById(Long idHospedagem) {
+    public HospedagemResponse buscarHospedagemPorId(Long idHospedagem) {
         Hospedagem hospedagem = findById(idHospedagem);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
-    public HospedagemResponse getHospedagemByIdPredio(Long idPredio) {
+    public HospedagemResponse buscarHospedagemPorIdPredio(Long idPredio) {
         Hospedagem hospedagem = findByPredioId(idPredio);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
-    public HospedagemResponse getHospedagemByIdQuarto(Long idQuarto) {
+    public HospedagemResponse buscarHospedagemPorIdQuarto(Long idQuarto) {
         Hospedagem hospedagem = findByQuartoId(idQuarto);
         return hospedagemMapper.toResponse(hospedagem);
     }

@@ -3,6 +3,9 @@ package br.com.fiap.hackgrupo01.model.hospedagem;
 import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequest;
 import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioUpdateRequest;
 import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.opcionais.Item;
+import br.com.fiap.hackgrupo01.model.opcionais.Servico;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +32,13 @@ public class Hospedagem {
     @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL)
     private List<Predio> predios = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Servico> servicos;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Item> itens;
     public void alteracaoHospedagem(HospedagemRequest request) {
         this.nome = request.getNome();
         this.amenidades = request.getAmenidades();
