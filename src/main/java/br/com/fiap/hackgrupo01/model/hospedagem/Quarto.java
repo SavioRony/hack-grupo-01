@@ -25,6 +25,10 @@ public class Quarto {
     private List<String> camas;
     @ElementCollection
     private List<String> outrosMoveis;
+    @ElementCollection
+    private List<String> banheiro;
+    private Double valorDiaria;
+    private int quantidade;
     @ManyToOne
     @JoinColumn(name = "predio_id")
     @JsonIgnore
