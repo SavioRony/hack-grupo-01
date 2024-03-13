@@ -1,5 +1,7 @@
 package br.com.fiap.hackgrupo01.model.opcionais;
 
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequest;
 import br.com.fiap.hackgrupo01.model.hospedagem.Hospedagem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,4 +24,9 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospedagem_id")
     private Hospedagem hospedagem;
+
+    public void alterar(ItemUpdateRequest request){
+        this.nome = request.getNome();
+        this.valor = request.getValor();
+    }
 }

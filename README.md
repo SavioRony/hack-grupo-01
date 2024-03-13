@@ -1,4 +1,4 @@
-# Curl - Gestão de quartos
+## Gestão de quartos
 
 ### Cadastro de hospedagem
 
@@ -16,8 +16,6 @@ curl -X POST http://localhost:8080/hospedagem/predio -H "Content-Type: applicati
 ```bash
 curl -X POST "http://localhost:8080/hospedagem/quarto" -H "Content-Type: application/json" -d "{\"tipo\": \"Quarto Standard\", \"totalPessoas\": 2, \"camas\": [\"Cama de Casal\"], \"outrosMoveis\": [\"Mesa de Trabalho\"], \"banheiro\": [\"Chuveiro\", \"Pia\"], \"valorDiaria\": 100.0, \"quantidade\": 5, \"predio\": {\"id\": 456}}"
 ```
-
-Entendi, aqui estão os comandos `curl` ajustados para o formato que funciona no prompt de comando do Windows (cmd):
 
 ### Buscar hospedagem por id
 
@@ -78,4 +76,61 @@ curl -X DELETE http://localhost:8080/hospedagem/predio/5
 ```bash
 curl -X GET http://localhost:8080/hospedagem
 ```
+## Gestão de serviços e opcionais
 
+###  Cadastro de serviço
+
+```bash
+curl -X POST "http://localhost:8080/servico" -H "Content-Type: application/json" -d "{\"nome\": \"Nome do Serviço\", \"valor\": 30.00, \"hospedagem\": {\"id\": 1}}"
+```
+
+###  Cadastro de item
+
+```bash
+curl -X POST "http://localhost:8080/item" -H "Content-Type: application/json" -d "{\"nome\": \"Nome do Item\", \"valor\": 20.00, \"hospedagem\": {\"id\": 1}}"
+```
+###  Buscar serviço por id
+
+```bash
+curl -X GET "http://localhost:8080/servico/2"
+```
+###  Buscar item por ID
+
+```bash
+curl -X GET "http://localhost:8080/item/456"
+```
+
+###  Buscar serviço por hospedagem
+
+```bash
+curl -X GET "http://localhost:8080/servico/hospedagem/1"
+```
+
+###  Buscar itens por hospedagem
+
+```bash
+curl -X GET "http://localhost:8080/item/hospedagem/1"
+```
+
+###  Alterar serviço
+
+```bash
+curl -X PUT "http://localhost:8080/servico/2" -H "Content-Type: application/json" -d "{\"nome\": \"Novo Nome do Serviço\", \"valor\": 50.00}"
+```
+
+###  Alterar item
+
+```bash
+curl -X PUT "http://localhost:8080/item/2" -H "Content-Type: application/json" -d "{\"nome\": \"Novo Nome do Item\", \"valor\": 25.00}"
+```
+
+###  Deletar item por ID
+
+```bash
+curl -X DELETE "http://localhost:8080/item/2"
+```
+###  Deletar serviço por id
+
+```bash
+curl -X DELETE "http://localhost:8080/servico/2"
+```
