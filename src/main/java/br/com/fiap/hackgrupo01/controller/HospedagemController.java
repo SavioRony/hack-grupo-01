@@ -38,22 +38,22 @@ public class HospedagemController {
     @GetMapping
     @Operation(summary = "Buscar todas as hospedagens")
     public ResponseEntity<List<HospedagemResponse>> getHospedagens(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagens());
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagens());
     }
     @GetMapping("/{idHospedagem}")
     @Operation(summary = "Buscar hospedagem por id")
     public ResponseEntity<HospedagemResponse> getHospedagemById(@PathVariable Long idHospedagem){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagemById(idHospedagem));
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagemPorId(idHospedagem));
     }
     @GetMapping("/predio/{idPredio}")
     @Operation(summary = "Buscar hospedagem por id do predio")
     public ResponseEntity<HospedagemResponse> getHospedagemByIdPredio(@PathVariable Long idPredio){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagemByIdPredio(idPredio));
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagemPorIdPredio(idPredio));
     }
     @GetMapping("/quarto/{idQuarto}")
     @Operation(summary = "Buscar hospedagem por id do quarto")
     public ResponseEntity<HospedagemResponse> getHospedagemByIdQuarto(@PathVariable Long idQuarto){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getHospedagemByIdQuarto(idQuarto));
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagemPorIdQuarto(idQuarto));
     }
     @PutMapping("/{idHospedagem}")
     @Operation(summary = "Altera hospedagem")

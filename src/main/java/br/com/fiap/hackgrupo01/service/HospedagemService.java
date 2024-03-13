@@ -9,10 +9,10 @@ public interface HospedagemService {
     HospedagemResponse cadastroHospedagem(HospedagemRequest hospedagemRequest);
     HospedagemResponse cadastroPredio(PredioRequest predioRequest);
     HospedagemResponse cadastroQuarto(QuartoRequest request);
-    List<HospedagemResponse> getHospedagens();
-    HospedagemResponse getHospedagemById(Long idHospedagem);
-    HospedagemResponse getHospedagemByIdPredio(Long idPredio);
-    HospedagemResponse getHospedagemByIdQuarto(Long idQuarto);
+    List<HospedagemResponse> buscarHospedagens();
+    HospedagemResponse buscarHospedagemPorId(Long idHospedagem);
+    HospedagemResponse buscarHospedagemPorIdPredio(Long idPredio);
+    HospedagemResponse buscarHospedagemPorIdQuarto(Long idQuarto);
     HospedagemResponse alteracaoHospedagem(Long idHospedagem, HospedagemRequest request);
     HospedagemResponse alteracaoPredio(Long idPredio, PredioUpdateRequest request);
     HospedagemResponse alteracaoQuarto(Long idQuarto, QuartoUpdateRequest request);
