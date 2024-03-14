@@ -26,15 +26,14 @@ public class ClienteController {
 
     @GetMapping
     @Operation(summary = "Buscar todos os clientes")
-    ResponseEntity<List<ClienteDTO>> findAll(){
+    public ResponseEntity<List<ClienteDTO>> findAll(){
         var response = service.findAll();
-
         return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar clientes por id")
-    ResponseEntity<ClienteDTO> findById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<ClienteDTO> findById(@PathVariable(name = "id") Long id){
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -54,7 +53,7 @@ public class ClienteController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Exclusão de Cliente")
-    ResponseEntity<?> delete(@PathVariable(name = "id") Long id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") Long id){
         service.delete(id);
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
     }

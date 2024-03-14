@@ -176,7 +176,7 @@ class HospedagemServiceImplTest {
         List<HospedagemResponse> expectedResponses = Collections.singletonList(new HospedagemResponse());
         when(hospedagemMapper.toResponses(hospedagens)).thenReturn(expectedResponses);
 
-        List<HospedagemResponse> responses = service.getHospedagens();
+        List<HospedagemResponse> responses = service.buscarHospedagens();
 
         assertEquals(expectedResponses, responses);
         verify(repository, times(1)).findAll();
@@ -192,7 +192,7 @@ class HospedagemServiceImplTest {
         HospedagemResponse expectedResponse = new HospedagemResponse();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.getHospedagemById(idHospedagem);
+        HospedagemResponse response = service.buscarHospedagemPorId(idHospedagem);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).findById(idHospedagem);
@@ -208,7 +208,7 @@ class HospedagemServiceImplTest {
         HospedagemResponse expectedResponse = new HospedagemResponse();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.getHospedagemByIdPredio(idPredio);
+        HospedagemResponse response = service.buscarHospedagemPorIdPredio(idPredio);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).findByPredioId(idPredio);
@@ -224,7 +224,7 @@ class HospedagemServiceImplTest {
         HospedagemResponse expectedResponse = new HospedagemResponse();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.getHospedagemByIdQuarto(idQuarto);
+        HospedagemResponse response = service.buscarHospedagemPorIdQuarto(idQuarto);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).findByQuartoId(idQuarto);
@@ -236,7 +236,7 @@ class HospedagemServiceImplTest {
         long idHospedagem = 1L;
         when(repository.findById(idHospedagem)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.getHospedagemById(idHospedagem));
+        assertThrows(NotFoundException.class, () -> service.buscarHospedagemPorId(idHospedagem));
     }
 
     @Test
@@ -245,7 +245,7 @@ class HospedagemServiceImplTest {
         long idPredio = 1L;
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.getHospedagemByIdPredio(idPredio));
+        assertThrows(NotFoundException.class, () -> service.buscarHospedagemPorIdPredio(idPredio));
     }
 
     @Test
@@ -254,7 +254,7 @@ class HospedagemServiceImplTest {
         long idQuarto = 1L;
         when(repository.findByQuartoId(idQuarto)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.getHospedagemByIdQuarto(idQuarto));
+        assertThrows(NotFoundException.class, () -> service.buscarHospedagemPorIdQuarto(idQuarto));
     }
 
     @Test
