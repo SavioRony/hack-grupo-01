@@ -5,7 +5,7 @@ package br.com.fiap.hackgrupo01.handler;
 import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.model.dto.error.BadRequestExceptionDetails;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
-import br.com.fiap.hackgrupo01.exception.ValidationExceptionDetails;
+import br.com.fiap.hackgrupo01.model.dto.error.ValidationExceptionDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
