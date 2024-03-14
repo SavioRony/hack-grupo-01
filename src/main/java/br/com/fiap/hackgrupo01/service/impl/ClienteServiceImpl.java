@@ -2,44 +2,44 @@ package br.com.fiap.hackgrupo01.service.impl;
 
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ClienteMapper;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
 import br.com.fiap.hackgrupo01.repository.ClienteRepository;
 import br.com.fiap.hackgrupo01.service.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClienteServiceImpl implements ClienteService {
 
-    @Autowired
-    private ClienteRepository repository;
+    private final ClienteRepository repository;
 
-    @Autowired
-    private ClienteMapper mapper;
+    private final ClienteMapper mapper;
 
     private static final String NOT_FOUND_MESSAGE= "Não foi encontrado cliente com id ";
 
     @Override
-    public List<ClienteDTO> findAll() {
+    public List<ClienteResponse> buscarClientes() {
         return mapper.toResponses(repository.findAll());
     }
 
     @Override
-    public ClienteDTO findById(Long id) {
+    public ClienteResponse buscarClientePorId(Long id) {
         return repository.findById(id).map(cliente -> mapper.toResponse(cliente)).orElseThrow(() -> {
             throw new NotFoundException(NOT_FOUND_MESSAGE.concat(id.toString()));
         });
     }
 
     @Override
-    public ClienteDTO create(ClienteDTO dto) {
+    public ClienteResponse salvarCliente(ClienteRequest dto) {
         return mapper.toResponse(repository.save(mapper.toModel(dto)));
     }
 
     @Override
-    public ClienteDTO update(ClienteDTO dto, Long id) {
+    public ClienteResponse alterarCliente(ClienteRequest dto, Long id) {
         var response = repository.findById(id);
         if(response.isPresent()){
             return mapper.toResponse(repository.save(mapper.toModel(dto)));
@@ -48,7 +48,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deletarCliente(Long id) {
         var response = repository.findById(id);
         if(response.isPresent()){
             repository.deleteById(id);

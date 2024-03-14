@@ -5,7 +5,7 @@ package br.com.fiap.hackgrupo01.handler;
 import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.model.dto.error.BadRequestExceptionDetails;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
-import br.com.fiap.hackgrupo01.exception.ValidationExceptionDetails;
+import br.com.fiap.hackgrupo01.model.dto.error.ValidationExceptionDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,15 @@ public class RestExceptionHandler {
                 .details("Check the field(s) error")
                 .fields(fields)
                 .fieldsMessage(fieldsMessage)
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    protected ResponseEntity<Object> sqlIntegryConstraint() {
+
+        return new ResponseEntity<>(BadRequestExceptionDetails.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .title("Bad Request Exception")
+                .details("CPF ja cadastrado!")
                 .build(), HttpStatus.BAD_REQUEST);
     }
 

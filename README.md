@@ -134,3 +134,34 @@ curl -X DELETE "http://localhost:8080/item/2"
 ```bash
 curl -X DELETE "http://localhost:8080/servico/2"
 ```
+## Gestão de clientes
+
+### Cadastro de Cliente
+
+```bash
+curl -X POST "http://localhost:8080/cliente" -H "Content-Type: application/json" -d "{\"paisOrigem\": \"Brasil\", \"cpf\": \"12345678902\", \"passaporte\": \"ABC123\", \"nomeCompleto\": \"João Silva\", \"dataNascimento\": \"01/01/1990\", \"enderecoPaisOrigem\": \"Rua ABC, 123\", \"telefone\": \"(11) 98765-4321\", \"email\": \"joao@example.com\"}"
+```
+
+### Buscar cliente por id
+
+```bash
+curl -X GET "http://localhost:8080/cliente/1"
+```
+
+### Buscar todos os clientes
+
+```bash
+curl -X GET "http://localhost:8080/cliente"
+```
+
+### Atualizar Cliente
+
+```bash
+curl -X PUT "http://localhost:8080/cliente/1" -H "Content-Type: application/json" -d "{\"paisOrigem\": \"Brasil\", \"cpf\": \"12345678901\", \"passaporte\": \"ABC123\", \"nomeCompleto\": \"João Silva\", \"dataNascimento\": \"01/01/1990\", \"enderecoPaisOrigem\": \"Rua ABC, 123\", \"telefone\": \"(11) 98765-4321\", \"email\": \"joao@example.com\"}"
+```
+
+### Exclusão de Cliente
+
+```bash
+curl -X DELETE "http://localhost:8080/cliente/1"
+```

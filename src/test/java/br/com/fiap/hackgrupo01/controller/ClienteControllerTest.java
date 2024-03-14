@@ -1,6 +1,7 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
 import br.com.fiap.hackgrupo01.service.ClienteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,67 +26,76 @@ class ClienteControllerTest {
     @InjectMocks
     private ClienteController clienteController;
 
-    private ClienteDTO clienteDTO;
+    private ClienteResponse clienteResponse;
+    private ClienteRequest clienteRequest;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        clienteDTO = new ClienteDTO();
-        clienteDTO.setId(1L);
-        clienteDTO.setNomeCompleto("Fulano");
-        clienteDTO.setEmail("fulano@example.com");
-        clienteDTO.setCpf("12345678901");
-        clienteDTO.setDataNascimento("01/01/1990");
-        clienteDTO.setEnderecoPaisOrigem("Brazil");
-        clienteDTO.setTelefone("123456789");
-        clienteDTO.setPaisOrigem("Brasil");
+        clienteResponse = new ClienteResponse();
+        clienteResponse.setNomeCompleto("Fulano");
+        clienteResponse.setEmail("fulano@example.com");
+        clienteResponse.setCpf("12345678901");
+        clienteResponse.setDataNascimento("01/01/1990");
+        clienteResponse.setEnderecoPaisOrigem("Brazil");
+        clienteResponse.setTelefone("123456789");
+        clienteResponse.setPaisOrigem("Brasil");
+
+        clienteRequest = new ClienteRequest();
+        clienteRequest.setNomeCompleto("Fulano");
+        clienteRequest.setEmail("fulano@example.com");
+        clienteRequest.setCpf("12345678901");
+        clienteRequest.setDataNascimento("01/01/1990");
+        clienteRequest.setEnderecoPaisOrigem("Brazil");
+        clienteRequest.setTelefone("123456789");
+        clienteRequest.setPaisOrigem("Brasil");
     }
 
     @Test
     @DisplayName("Teste para buscar todos os clientes")
     void testFindAll() {
-        when(clienteService.findAll()).thenReturn(Collections.singletonList(clienteDTO));
+        when(clienteService.buscarClientes()).thenReturn(Collections.singletonList(clienteResponse));
 
-        ResponseEntity<List<ClienteDTO>> responseEntity = clienteController.findAll();
+        ResponseEntity<List<ClienteResponse>> responseEntity = clienteController.findAll();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(Collections.singletonList(clienteDTO), responseEntity.getBody());
+        assertEquals(Collections.singletonList(clienteResponse), responseEntity.getBody());
     }
 
     @Test
     @DisplayName("Teste para buscar cliente por ID")
     void testFindById() {
         Long id = 1L;
-        when(clienteService.findById(id)).thenReturn(clienteDTO);
+        when(clienteService.buscarClientePorId(id)).thenReturn(clienteResponse);
 
-        ResponseEntity<ClienteDTO> responseEntity = clienteController.findById(id);
+        ResponseEntity<ClienteResponse> responseEntity = clienteController.findById(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(clienteDTO, responseEntity.getBody());
+        assertEquals(clienteResponse, responseEntity.getBody());
     }
 
     @Test
     @DisplayName("Teste para cadastrar cliente")
     void testCreate() {
-        when(clienteService.create(clienteDTO)).thenReturn(clienteDTO);
+        when(clienteService.salvarCliente(clienteRequest)).thenReturn(clienteResponse);
 
-        ResponseEntity<ClienteDTO> responseEntity = clienteController.create(clienteDTO);
+        ResponseEntity<ClienteResponse> responseEntity = clienteController.create(clienteRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(clienteDTO, responseEntity.getBody());
+        assertEquals(clienteResponse, responseEntity.getBody());
     }
 
     @Test
     @DisplayName("Teste para atualizar cliente")
     void testUpdate() {
         Long id = 1L;
-        when(clienteService.update(clienteDTO, id)).thenReturn(clienteDTO);
+        when(clienteService.alterarCliente(clienteRequest, id)).thenReturn(clienteResponse);
 
-        ResponseEntity<ClienteDTO> responseEntity = clienteController.update(id, clienteDTO);
+        ResponseEntity<ClienteResponse> responseEntity = clienteController.update(id, clienteRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(clienteDTO, responseEntity.getBody());
+        assertEquals(clienteResponse, responseEntity.getBody());
     }
 
     @Test
@@ -95,6 +105,6 @@ class ClienteControllerTest {
         ResponseEntity<?> responseEntity = clienteController.delete(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(clienteService, times(1)).delete(id);
+        verify(clienteService, times(1)).deletarCliente(id);
     }
 }

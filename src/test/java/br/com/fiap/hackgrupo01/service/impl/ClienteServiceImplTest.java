@@ -3,7 +3,8 @@ package br.com.fiap.hackgrupo01.service.impl;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ClienteMapper;
 import br.com.fiap.hackgrupo01.model.cliente.Cliente;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
 import br.com.fiap.hackgrupo01.repository.ClienteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,28 +31,34 @@ class ClienteServiceImplTest {
     @InjectMocks
     private ClienteServiceImpl service;
 
-    private ClienteDTO clienteDTO;
+    private ClienteRequest clienteRequest;
+    private ClienteResponse clienteResponse;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        clienteDTO = new ClienteDTO();
-        clienteDTO.setId(1L);
-        clienteDTO.setNomeCompleto("João Silva");
-        clienteDTO.setCpf("12345678900");
-        clienteDTO.setEmail("joao@example.com");
-        clienteDTO.setTelefone("(11) 98765-4321");
+        clienteRequest = new ClienteRequest();
+        clienteRequest.setNomeCompleto("João Silva");
+        clienteRequest.setCpf("12345678900");
+        clienteRequest.setEmail("joao@example.com");
+        clienteRequest.setTelefone("(11) 98765-4321");
+
+        clienteResponse = new ClienteResponse();
+        clienteResponse.setNomeCompleto("João Silva");
+        clienteResponse.setCpf("12345678900");
+        clienteResponse.setEmail("joao@example.com");
+        clienteResponse.setTelefone("(11) 98765-4321");
     }
 
     @Test
     @DisplayName("Teste para buscar todos os clientes")
     void testFindAll() {
-        List<ClienteDTO> clientes = Collections.singletonList(clienteDTO);
+        List<ClienteResponse> clientes = Collections.singletonList(clienteResponse);
         when(repository.findAll()).thenReturn(Collections.emptyList());
         when(mapper.toResponses(Collections.emptyList())).thenReturn(clientes);
 
-        List<ClienteDTO> result = service.findAll();
+        List<ClienteResponse> result = service.buscarClientes();
 
         assertEquals(clientes, result);
     }
@@ -61,12 +68,12 @@ class ClienteServiceImplTest {
     void testFindByIdSuccess() {
         long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.of(new Cliente()));
-        when(mapper.toResponse(any())).thenReturn(clienteDTO);
+        when(mapper.toResponse(any())).thenReturn(clienteResponse);
 
-        ClienteDTO result = service.findById(id);
+        ClienteResponse result = service.buscarClientePorId(id);
 
         assertNotNull(result);
-        assertEquals(clienteDTO, result);
+        assertEquals(clienteResponse, result);
     }
 
     @Test
@@ -75,19 +82,19 @@ class ClienteServiceImplTest {
         long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.findById(id));
+        assertThrows(NotFoundException.class, () -> service.buscarClientePorId(id));
     }
 
     @Test
     @DisplayName("Teste para criar cliente")
     void testCreate() {
         when(repository.save(any())).thenReturn(new Cliente());
-        when(mapper.toResponse(any())).thenReturn(clienteDTO);
+        when(mapper.toResponse(any())).thenReturn(clienteResponse);
 
-        ClienteDTO result = service.create(clienteDTO);
+        ClienteResponse result = service.salvarCliente(clienteRequest);
 
         assertNotNull(result);
-        assertEquals(clienteDTO, result);
+        assertEquals(clienteResponse, result);
     }
 
     @Test
@@ -96,12 +103,12 @@ class ClienteServiceImplTest {
         long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.of(new Cliente()));
         when(repository.save(any())).thenReturn(new Cliente());
-        when(mapper.toResponse(any())).thenReturn(clienteDTO);
+        when(mapper.toResponse(any())).thenReturn(clienteResponse);
 
-        ClienteDTO result = service.update(clienteDTO, id);
+        ClienteResponse result = service.alterarCliente(clienteRequest, id);
 
         assertNotNull(result);
-        assertEquals(clienteDTO, result);
+        assertEquals(clienteResponse, result);
     }
 
     @Test
@@ -110,7 +117,7 @@ class ClienteServiceImplTest {
         long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.update(clienteDTO, id));
+        assertThrows(NotFoundException.class, () -> service.alterarCliente(clienteRequest, id));
     }
 
     @Test
@@ -119,7 +126,7 @@ class ClienteServiceImplTest {
         long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.of(new Cliente()));
 
-        assertDoesNotThrow(() -> service.delete(id));
+        assertDoesNotThrow(() -> service.deletarCliente(id));
         verify(repository, times(1)).deleteById(id);
     }
 
@@ -129,6 +136,6 @@ class ClienteServiceImplTest {
         long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.delete(id));
+        assertThrows(NotFoundException.class, () -> service.deletarCliente(id));
     }
 }

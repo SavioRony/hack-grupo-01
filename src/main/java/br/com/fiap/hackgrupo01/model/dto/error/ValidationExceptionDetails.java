@@ -1,6 +1,5 @@
-package br.com.fiap.hackgrupo01.exception;
+package br.com.fiap.hackgrupo01.model.dto.error;
 
-import br.com.fiap.hackgrupo01.model.dto.error.ExceptionDetails;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
