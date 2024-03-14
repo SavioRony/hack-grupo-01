@@ -2,8 +2,8 @@ package br.com.fiap.hackgrupo01.service.impl;
 
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ClienteMapper;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponseDTO;
 import br.com.fiap.hackgrupo01.repository.ClienteRepository;
 import br.com.fiap.hackgrupo01.service.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -22,24 +22,24 @@ public class ClienteServiceImpl implements ClienteService {
     private static final String NOT_FOUND_MESSAGE= "Não foi encontrado cliente com id ";
 
     @Override
-    public List<ClienteResponse> buscarClientes() {
+    public List<ClienteResponseDTO> buscarClientes() {
         return mapper.toResponses(repository.findAll());
     }
 
     @Override
-    public ClienteResponse buscarClientePorId(Long id) {
+    public ClienteResponseDTO buscarClientePorId(Long id) {
         return repository.findById(id).map(cliente -> mapper.toResponse(cliente)).orElseThrow(() -> {
             throw new NotFoundException(NOT_FOUND_MESSAGE.concat(id.toString()));
         });
     }
 
     @Override
-    public ClienteResponse salvarCliente(ClienteRequest dto) {
+    public ClienteResponseDTO salvarCliente(ClienteRequestDTO dto) {
         return mapper.toResponse(repository.save(mapper.toModel(dto)));
     }
 
     @Override
-    public ClienteResponse alterarCliente(ClienteRequest dto, Long id) {
+    public ClienteResponseDTO alterarCliente(ClienteRequestDTO dto, Long id) {
         var response = repository.findById(id);
         if(response.isPresent()){
             return mapper.toResponse(repository.save(mapper.toModel(dto)));

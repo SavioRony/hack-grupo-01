@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class QuartoUpdateRequest {
+public class QuartoUpdateRequestDTO {
     @NotBlank(message = "Não pode ser nulo ou vazio")
     private String tipo;
     @Min(value = 1, message = "Quantidade minima de pessoas permitido é 1")

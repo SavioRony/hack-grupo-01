@@ -33,11 +33,11 @@ class HospedagemControllerTest {
     @Test
     @DisplayName("Teste para cadastrar uma hospedagem")
     void testCadastroHospedagem() {
-        HospedagemRequest request = new HospedagemRequest();
-        HospedagemResponse response = new HospedagemResponse();
+        HospedagemRequestDTO request = new HospedagemRequestDTO();
+        HospedagemResponseDTO response = new HospedagemResponseDTO();
         when(service.salvarHospedagem(request)).thenReturn(response);
 
-        ResponseEntity<HospedagemResponse> result = controller.cadastroHospedagem(request);
+        ResponseEntity<HospedagemResponseDTO> result = controller.cadastroHospedagem(request);
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
         assertEquals(response, result.getBody());
@@ -46,11 +46,11 @@ class HospedagemControllerTest {
     @Test
     @DisplayName("Teste para cadastrar um prédio")
     void testCadastroPredio() {
-        PredioRequest request = new PredioRequest();
-        HospedagemResponse response = new HospedagemResponse();
+        PredioRequestDTO request = new PredioRequestDTO();
+        HospedagemResponseDTO response = new HospedagemResponseDTO();
         when(service.salvarPredio(request)).thenReturn(response);
 
-        ResponseEntity<HospedagemResponse> result = controller.cadastroPredio(request);
+        ResponseEntity<HospedagemResponseDTO> result = controller.cadastroPredio(request);
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
         assertEquals(response, result.getBody());
@@ -59,11 +59,11 @@ class HospedagemControllerTest {
     @Test
     @DisplayName("Teste para cadastrar um quarto")
     void testCadastroQuarto() {
-        QuartoRequest request = new QuartoRequest();
-        HospedagemResponse response = new HospedagemResponse();
+        QuartoRequestDTO request = new QuartoRequestDTO();
+        HospedagemResponseDTO response = new HospedagemResponseDTO();
         when(service.salvarQuarto(request)).thenReturn(response);
 
-        ResponseEntity<HospedagemResponse> result = controller.cadastroQuarto(request);
+        ResponseEntity<HospedagemResponseDTO> result = controller.cadastroQuarto(request);
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
         assertEquals(response, result.getBody());
@@ -72,10 +72,10 @@ class HospedagemControllerTest {
     @Test
     @DisplayName("Teste para buscar todas as hospedagens")
     void testGetHospedagens() {
-        List<HospedagemResponse> hospedagens = new ArrayList<>();
+        List<HospedagemResponseDTO> hospedagens = new ArrayList<>();
         when(service.buscarHospedagens()).thenReturn(hospedagens);
 
-        ResponseEntity<List<HospedagemResponse>> result = controller.getHospedagens();
+        ResponseEntity<List<HospedagemResponseDTO>> result = controller.getHospedagens();
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(hospedagens, result.getBody());
@@ -85,10 +85,10 @@ class HospedagemControllerTest {
     @DisplayName("Teste para buscar uma hospedagem pelo ID")
     void testGetHospedagemById() {
         long idHospedagem = 1L;
-        HospedagemResponse hospedagem = new HospedagemResponse();
+        HospedagemResponseDTO hospedagem = new HospedagemResponseDTO();
         when(service.buscarHospedagemPorId(idHospedagem)).thenReturn(hospedagem);
 
-        ResponseEntity<HospedagemResponse> result = controller.getHospedagemById(idHospedagem);
+        ResponseEntity<HospedagemResponseDTO> result = controller.getHospedagemById(idHospedagem);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(hospedagem, result.getBody());
@@ -98,10 +98,10 @@ class HospedagemControllerTest {
     @DisplayName("Teste para buscar uma hospedagem pelo ID do prédio")
     void testGetHospedagemByIdPredio() {
         long idPredio = 1L;
-        HospedagemResponse hospedagem = new HospedagemResponse();
+        HospedagemResponseDTO hospedagem = new HospedagemResponseDTO();
         when(service.buscarHospedagemPorIdPredio(idPredio)).thenReturn(hospedagem);
 
-        ResponseEntity<HospedagemResponse> result = controller.getHospedagemByIdPredio(idPredio);
+        ResponseEntity<HospedagemResponseDTO> result = controller.getHospedagemByIdPredio(idPredio);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(hospedagem, result.getBody());
@@ -111,7 +111,7 @@ class HospedagemControllerTest {
     @DisplayName("Teste para buscar uma hospedagem pelo ID do quarto")
     void testGetHospedagemByIdQuarto() {
         long idQuarto = 1L;
-        HospedagemResponse hospedagem = new HospedagemResponse();
+        HospedagemResponseDTO hospedagem = new HospedagemResponseDTO();
         when(service.buscarHospedagemPorIdQuarto(idQuarto)).thenReturn(hospedagem);
 
         ResponseEntity<?> result = controller.getHospedagemByIdQuarto(idQuarto);
@@ -124,11 +124,11 @@ class HospedagemControllerTest {
     @DisplayName("Teste para alterar uma hospedagem")
     void testAlteracaoHospedagem() {
         long idHospedagem = 1L;
-        HospedagemRequest request = new HospedagemRequest();
-        HospedagemResponse response = new HospedagemResponse();
+        HospedagemRequestDTO request = new HospedagemRequestDTO();
+        HospedagemResponseDTO response = new HospedagemResponseDTO();
         when(service.alterarHospedagem(idHospedagem, request)).thenReturn(response);
 
-        ResponseEntity<HospedagemResponse> result = controller.alteracaoHospedagem(idHospedagem, request);
+        ResponseEntity<HospedagemResponseDTO> result = controller.alteracaoHospedagem(idHospedagem, request);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(response, result.getBody());
@@ -138,11 +138,11 @@ class HospedagemControllerTest {
     @DisplayName("Teste para alterar um prédio")
     void testAlteracaoPredio() {
         long idPredio = 1L;
-        PredioUpdateRequest request = new PredioUpdateRequest();
-        HospedagemResponse response = new HospedagemResponse();
+        PredioUpdateRequestDTO request = new PredioUpdateRequestDTO();
+        HospedagemResponseDTO response = new HospedagemResponseDTO();
         when(service.alterarPredio(idPredio, request)).thenReturn(response);
 
-        ResponseEntity<HospedagemResponse> result = controller.alteracaoPredio(idPredio, request);
+        ResponseEntity<HospedagemResponseDTO> result = controller.alteracaoPredio(idPredio, request);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(response, result.getBody());
@@ -152,8 +152,8 @@ class HospedagemControllerTest {
     @DisplayName("Teste para alterar um quarto")
     void testAlteracaoQuarto() {
         long idQuarto = 1L;
-        QuartoUpdateRequest request = new QuartoUpdateRequest();
-        HospedagemResponse response = new HospedagemResponse();
+        QuartoUpdateRequestDTO request = new QuartoUpdateRequestDTO();
+        HospedagemResponseDTO response = new HospedagemResponseDTO();
         when(service.alterarQuarto(idQuarto, request)).thenReturn(response);
 
         ResponseEntity<?> result = controller.alteracaoQuarto(idQuarto, request);

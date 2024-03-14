@@ -1,7 +1,7 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponseDTO;
 import br.com.fiap.hackgrupo01.service.ClienteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,14 +26,14 @@ class ClienteControllerTest {
     @InjectMocks
     private ClienteController clienteController;
 
-    private ClienteResponse clienteResponse;
-    private ClienteRequest clienteRequest;
+    private ClienteResponseDTO clienteResponse;
+    private ClienteRequestDTO clienteRequest;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        clienteResponse = new ClienteResponse();
+        clienteResponse = new ClienteResponseDTO();
         clienteResponse.setNomeCompleto("Fulano");
         clienteResponse.setEmail("fulano@example.com");
         clienteResponse.setCpf("12345678901");
@@ -42,7 +42,7 @@ class ClienteControllerTest {
         clienteResponse.setTelefone("123456789");
         clienteResponse.setPaisOrigem("Brasil");
 
-        clienteRequest = new ClienteRequest();
+        clienteRequest = new ClienteRequestDTO();
         clienteRequest.setNomeCompleto("Fulano");
         clienteRequest.setEmail("fulano@example.com");
         clienteRequest.setCpf("12345678901");
@@ -57,7 +57,7 @@ class ClienteControllerTest {
     void testFindAll() {
         when(clienteService.buscarClientes()).thenReturn(Collections.singletonList(clienteResponse));
 
-        ResponseEntity<List<ClienteResponse>> responseEntity = clienteController.findAll();
+        ResponseEntity<List<ClienteResponseDTO>> responseEntity = clienteController.findAll();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(Collections.singletonList(clienteResponse), responseEntity.getBody());
@@ -69,7 +69,7 @@ class ClienteControllerTest {
         Long id = 1L;
         when(clienteService.buscarClientePorId(id)).thenReturn(clienteResponse);
 
-        ResponseEntity<ClienteResponse> responseEntity = clienteController.findById(id);
+        ResponseEntity<ClienteResponseDTO> responseEntity = clienteController.findById(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(clienteResponse, responseEntity.getBody());
@@ -80,7 +80,7 @@ class ClienteControllerTest {
     void testCreate() {
         when(clienteService.salvarCliente(clienteRequest)).thenReturn(clienteResponse);
 
-        ResponseEntity<ClienteResponse> responseEntity = clienteController.create(clienteRequest);
+        ResponseEntity<ClienteResponseDTO> responseEntity = clienteController.create(clienteRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(clienteResponse, responseEntity.getBody());
@@ -92,7 +92,7 @@ class ClienteControllerTest {
         Long id = 1L;
         when(clienteService.alterarCliente(clienteRequest, id)).thenReturn(clienteResponse);
 
-        ResponseEntity<ClienteResponse> responseEntity = clienteController.update(id, clienteRequest);
+        ResponseEntity<ClienteResponseDTO> responseEntity = clienteController.update(id, clienteRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(clienteResponse, responseEntity.getBody());

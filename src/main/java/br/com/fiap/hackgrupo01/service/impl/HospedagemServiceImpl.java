@@ -33,20 +33,20 @@ public class HospedagemServiceImpl implements HospedagemService {
     private final QuartoMapper quartoMapper;
 
     @Override
-    public HospedagemResponse salvarHospedagem(HospedagemRequest hospedagemRequest) {
+    public HospedagemResponseDTO salvarHospedagem(HospedagemRequestDTO hospedagemRequest) {
         Hospedagem hospedagem = repository.save(hospedagemMapper.toModel(hospedagemRequest));
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
-    public HospedagemResponse salvarPredio(PredioRequest predioRequest) {
+    public HospedagemResponseDTO salvarPredio(PredioRequestDTO predioRequest) {
         Hospedagem hospedagem = findById(predioRequest.getHospedagem().getId());
         hospedagem.getPredios().add(predioMapper.toModel(predioRequest));
         return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
-    public HospedagemResponse salvarQuarto(QuartoRequest request) {
+    public HospedagemResponseDTO salvarQuarto(QuartoRequestDTO request) {
         Hospedagem hospedagem = findByPredioId(request.getPredio().getId());
         for (Predio predio : hospedagem.getPredios()) {
             if (predio.getId().equals(request.getPredio().getId())) {
@@ -58,44 +58,44 @@ public class HospedagemServiceImpl implements HospedagemService {
     }
 
     @Override
-    public List<HospedagemResponse> buscarHospedagens() {
+    public List<HospedagemResponseDTO> buscarHospedagens() {
         return hospedagemMapper.toResponses(repository.findAll());
     }
 
     @Override
-    public HospedagemResponse buscarHospedagemPorId(Long idHospedagem) {
+    public HospedagemResponseDTO buscarHospedagemPorId(Long idHospedagem) {
         Hospedagem hospedagem = findById(idHospedagem);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
-    public HospedagemResponse buscarHospedagemPorIdPredio(Long idPredio) {
+    public HospedagemResponseDTO buscarHospedagemPorIdPredio(Long idPredio) {
         Hospedagem hospedagem = findByPredioId(idPredio);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
-    public HospedagemResponse buscarHospedagemPorIdQuarto(Long idQuarto) {
+    public HospedagemResponseDTO buscarHospedagemPorIdQuarto(Long idQuarto) {
         Hospedagem hospedagem = findByQuartoId(idQuarto);
         return hospedagemMapper.toResponse(hospedagem);
     }
 
     @Override
-    public HospedagemResponse alterarHospedagem(Long idHospedagem, HospedagemRequest request) {
+    public HospedagemResponseDTO alterarHospedagem(Long idHospedagem, HospedagemRequestDTO request) {
         Hospedagem hospedagem = findById(idHospedagem);
         hospedagem.alteracaoHospedagem(request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
-    public HospedagemResponse alterarPredio(Long idPredio, PredioUpdateRequest request) {
+    public HospedagemResponseDTO alterarPredio(Long idPredio, PredioUpdateRequestDTO request) {
         Hospedagem hospedagem = findByPredioId(idPredio);
         hospedagem.alteracaoPredio(idPredio, request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));
     }
 
     @Override
-    public HospedagemResponse alterarQuarto(Long idQuarto, QuartoUpdateRequest request) {
+    public HospedagemResponseDTO alterarQuarto(Long idQuarto, QuartoUpdateRequestDTO request) {
         Hospedagem hospedagem = findByQuartoId(idQuarto);
         hospedagem.alteracaoQuarto(idQuarto, request);
         return hospedagemMapper.toResponse(repository.save(hospedagem));

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ServicoUpdateRequest {
+public class ServicoUpdateRequestDTO {
     @NotBlank(message = "Nome não pode ser nulo ou vazio")
     private String nome;
     @NotNull(message = "Nome não pode ser nulo")

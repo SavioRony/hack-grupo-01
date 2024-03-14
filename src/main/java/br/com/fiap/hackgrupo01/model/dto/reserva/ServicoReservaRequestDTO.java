@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.Data;
 
 @Data
-public class ServicoReservaRequest {
+public class ServicoReservaRequestDTO {
 
     @Valid
     private ServicoRequestDTO servico;

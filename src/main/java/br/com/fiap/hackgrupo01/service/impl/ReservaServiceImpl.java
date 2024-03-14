@@ -3,8 +3,8 @@ package br.com.fiap.hackgrupo01.service.impl;
 import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ReservaMapper;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponse;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponseDTO;
 import br.com.fiap.hackgrupo01.model.dto.reserva.*;
 import br.com.fiap.hackgrupo01.model.hospedagem.Quarto;
 import br.com.fiap.hackgrupo01.model.opcionais.Item;
@@ -92,9 +92,9 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     private Reserva validarReserva(ReservaRequestDTO reserva) {
-        ClienteResponse cliente = clienteService.buscarClientePorId(reserva.getCliente().getId());
+        ClienteResponseDTO cliente = clienteService.buscarClientePorId(reserva.getCliente().getId());
 
-        HospedagemResponse hospedagemResponse = hospedagemService.buscarHospedagemPorIdQuarto(reserva.getQuarto().getId());
+        HospedagemResponseDTO hospedagemResponse = hospedagemService.buscarHospedagemPorIdQuarto(reserva.getQuarto().getId());
         validDate(reserva.getQuarto(), reserva.getEntrada(), reserva.getSaida());
         double totalOpcionais = calcularTotalOpcionais(hospedagemResponse.getId(), reserva.getItens(), reserva.getServicos());
         Reserva model = mapper.toModel(reserva);
@@ -113,7 +113,7 @@ public class ReservaServiceImpl implements ReservaService {
         return totalOpcionais + (quarto.getValorDiaria() * diasEntre);
     }
 
-    private double calcularTotalOpcionais(Long idHospedagem, List<ItemReservaRequestDTO> itens, List<ServicoReservaRequest> servicos) {
+    private double calcularTotalOpcionais(Long idHospedagem, List<ItemReservaRequestDTO> itens, List<ServicoReservaRequestDTO> servicos) {
         double totalOpcionais = 0;
         for (ItemReservaRequestDTO i : itens) {
             Item item = itemRepository.findByIdAndHospedagemId(i.getItem().getId(), idHospedagem).orElseThrow(() -> {
@@ -122,7 +122,7 @@ public class ReservaServiceImpl implements ReservaService {
             totalOpcionais += (i.getQuantidade() * item.getValor());
         }
 
-        for (ServicoReservaRequest s : servicos) {
+        for (ServicoReservaRequestDTO s : servicos) {
             Servico servico = servicoRepository.findByIdAndHospedagemId(s.getServico().getId(), idHospedagem).orElseThrow(() -> {
                 throw new NotFoundException("Serviço " + s.getServico().getId() + " não esta disponivel para o quarto");
             });

@@ -13,7 +13,7 @@ public class ReservaRequestDTO {
     private ClienteRequestDTO cliente;
 
     private List<ItemReservaRequestDTO> itens;
-    private List<ServicoReservaRequest> servicos;
+    private List<ServicoReservaRequestDTO> servicos;
     private QuartoRequestDTO quarto;
 
     @NotNull

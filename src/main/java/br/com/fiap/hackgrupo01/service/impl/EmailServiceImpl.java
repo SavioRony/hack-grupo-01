@@ -1,6 +1,6 @@
 package br.com.fiap.hackgrupo01.service.impl;
 
-import br.com.fiap.hackgrupo01.model.dto.email.EmailRequest;
+import br.com.fiap.hackgrupo01.model.dto.email.EmailRequestDTO;
 import br.com.fiap.hackgrupo01.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -24,7 +24,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void enviarConfirmacaoReserva(EmailRequest emailRequest) {
+    public void enviarConfirmacaoReserva(EmailRequestDTO emailRequest) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 

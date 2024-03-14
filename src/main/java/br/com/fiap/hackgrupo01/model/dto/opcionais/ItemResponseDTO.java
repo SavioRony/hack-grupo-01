@@ -1,14 +1,14 @@
 package br.com.fiap.hackgrupo01.model.dto.opcionais;
 
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestId;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestIdDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ItemResponse {
+public class ItemResponseDTO {
     private Long id;
     private String nome;
     private Double valor;
-    private HospedagemRequestId hospedagem;
+    private HospedagemRequestIdDTO hospedagem;
 }

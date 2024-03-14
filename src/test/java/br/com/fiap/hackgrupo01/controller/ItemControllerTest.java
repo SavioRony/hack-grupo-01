@@ -1,8 +1,8 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemRequest;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.service.ItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,18 +27,18 @@ class ItemControllerTest {
     @InjectMocks
     private ItemController itemController;
 
-    private ItemRequest itemRequest;
-    private ItemResponse itemResponse;
+    private ItemRequestDTO itemRequest;
+    private ItemResponseDTO itemResponse;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        itemRequest = new ItemRequest();
+        itemRequest = new ItemRequestDTO();
         itemRequest.setNome("Refrigerante");
         itemRequest.setValor(5.0);
 
-        itemResponse = new ItemResponse();
+        itemResponse = new ItemResponseDTO();
         itemResponse.setId(1L);
         itemResponse.setNome("Refrigerante");
         itemResponse.setValor(5.0);
@@ -49,7 +49,7 @@ class ItemControllerTest {
     void testSalvarItem() {
         when(itemService.salvarItem(itemRequest)).thenReturn(itemResponse);
 
-        ResponseEntity<ItemResponse> responseEntity = itemController.salvarItem(itemRequest);
+        ResponseEntity<ItemResponseDTO> responseEntity = itemController.salvarItem(itemRequest);
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(itemResponse, responseEntity.getBody());
@@ -59,12 +59,12 @@ class ItemControllerTest {
     @DisplayName("Teste para alterar item")
     void testAlterarItem() {
         long id = 1L;
-        ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest();
+        ItemUpdateRequestDTO itemUpdateRequest = new ItemUpdateRequestDTO();
         itemUpdateRequest.setNome("Refrigerante");
         itemUpdateRequest.setValor(6.0);
         when(itemService.alterarItem(id, itemUpdateRequest)).thenReturn(itemResponse);
 
-        ResponseEntity<ItemResponse> responseEntity = itemController.alterarItem(id, itemUpdateRequest);
+        ResponseEntity<ItemResponseDTO> responseEntity = itemController.alterarItem(id, itemUpdateRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(itemResponse, responseEntity.getBody());
@@ -76,7 +76,7 @@ class ItemControllerTest {
         long id = 1L;
         when(itemService.buscarItemPorId(id)).thenReturn(itemResponse);
 
-        ResponseEntity<ItemResponse> responseEntity = itemController.buscarItemPorId(id);
+        ResponseEntity<ItemResponseDTO> responseEntity = itemController.buscarItemPorId(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(itemResponse, responseEntity.getBody());
@@ -96,10 +96,10 @@ class ItemControllerTest {
     @DisplayName("Teste para listar itens por hospedagem")
     void testListarItens() {
         long idHospedagem = 1L;
-        List<ItemResponse> itemResponses = Collections.singletonList(itemResponse);
+        List<ItemResponseDTO> itemResponses = Collections.singletonList(itemResponse);
         when(itemService.listarItensPorHospedagem(idHospedagem)).thenReturn(itemResponses);
 
-        ResponseEntity<List<ItemResponse>> responseEntity = itemController.listarItens(idHospedagem);
+        ResponseEntity<List<ItemResponseDTO>> responseEntity = itemController.listarItens(idHospedagem);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(itemResponses, responseEntity.getBody());

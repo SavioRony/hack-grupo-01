@@ -1,19 +1,19 @@
 package br.com.fiap.hackgrupo01.service;
 
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponseDTO;
 
 import java.util.List;
 
 public interface ClienteService {
 
-    List<ClienteResponse> buscarClientes();
+    List<ClienteResponseDTO> buscarClientes();
 
-    ClienteResponse buscarClientePorId(Long id);
+    ClienteResponseDTO buscarClientePorId(Long id);
 
-    ClienteResponse salvarCliente(ClienteRequest dto);
+    ClienteResponseDTO salvarCliente(ClienteRequestDTO dto);
 
-    ClienteResponse alterarCliente(ClienteRequest dto, Long id);
+    ClienteResponseDTO alterarCliente(ClienteRequestDTO dto, Long id);
 
     void deletarCliente(Long id);
 }

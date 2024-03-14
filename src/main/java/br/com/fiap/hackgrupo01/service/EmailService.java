@@ -1,7 +1,7 @@
 package br.com.fiap.hackgrupo01.service;
 
-import br.com.fiap.hackgrupo01.model.dto.email.EmailRequest;
+import br.com.fiap.hackgrupo01.model.dto.email.EmailRequestDTO;
 
 public interface EmailService {
-    void enviarConfirmacaoReserva(EmailRequest emailRequest);
+    void enviarConfirmacaoReserva(EmailRequestDTO emailRequest);
 }

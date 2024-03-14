@@ -22,55 +22,55 @@ public class HospedagemController {
 
     @PostMapping
     @Operation(summary = "Cadastro de hospedagem")
-    public ResponseEntity<HospedagemResponse> cadastroHospedagem(@RequestBody @Valid HospedagemRequest request){
+    public ResponseEntity<HospedagemResponseDTO> cadastroHospedagem(@RequestBody @Valid HospedagemRequestDTO request){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarHospedagem(request));
     }
     @PostMapping("/predio")
     @Operation(summary = "Cadastro de predio")
-    public ResponseEntity<HospedagemResponse> cadastroPredio(@RequestBody @Valid PredioRequest request){
+    public ResponseEntity<HospedagemResponseDTO> cadastroPredio(@RequestBody @Valid PredioRequestDTO request){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarPredio(request));
     }
     @PostMapping("/quarto")
     @Operation(summary = "Cadastro de quarto")
-    public ResponseEntity<HospedagemResponse> cadastroQuarto(@RequestBody @Valid QuartoRequest request){
+    public ResponseEntity<HospedagemResponseDTO> cadastroQuarto(@RequestBody @Valid QuartoRequestDTO request){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarQuarto(request));
     }
     @GetMapping
     @Operation(summary = "Buscar todas as hospedagens")
-    public ResponseEntity<List<HospedagemResponse>> getHospedagens(){
+    public ResponseEntity<List<HospedagemResponseDTO>> getHospedagens(){
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagens());
     }
     @GetMapping("/{idHospedagem}")
     @Operation(summary = "Buscar hospedagem por id")
-    public ResponseEntity<HospedagemResponse> getHospedagemById(@PathVariable Long idHospedagem){
+    public ResponseEntity<HospedagemResponseDTO> getHospedagemById(@PathVariable Long idHospedagem){
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagemPorId(idHospedagem));
     }
     @GetMapping("/predio/{idPredio}")
     @Operation(summary = "Buscar hospedagem por id do predio")
-    public ResponseEntity<HospedagemResponse> getHospedagemByIdPredio(@PathVariable Long idPredio){
+    public ResponseEntity<HospedagemResponseDTO> getHospedagemByIdPredio(@PathVariable Long idPredio){
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagemPorIdPredio(idPredio));
     }
     @GetMapping("/quarto/{idQuarto}")
     @Operation(summary = "Buscar hospedagem por id do quarto")
-    public ResponseEntity<HospedagemResponse> getHospedagemByIdQuarto(@PathVariable Long idQuarto){
+    public ResponseEntity<HospedagemResponseDTO> getHospedagemByIdQuarto(@PathVariable Long idQuarto){
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarHospedagemPorIdQuarto(idQuarto));
     }
     @PutMapping("/{idHospedagem}")
     @Operation(summary = "Altera hospedagem")
-    public ResponseEntity<HospedagemResponse> alteracaoHospedagem(@PathVariable Long idHospedagem,
-                                                 @RequestBody @Valid HospedagemRequest request){
+    public ResponseEntity<HospedagemResponseDTO> alteracaoHospedagem(@PathVariable Long idHospedagem,
+                                                                     @RequestBody @Valid HospedagemRequestDTO request){
         return ResponseEntity.status(HttpStatus.OK).body(service.alterarHospedagem(idHospedagem,request));
     }
     @PutMapping("/predio/{idPredio}")
     @Operation(summary = "Altera predio")
-    public ResponseEntity<HospedagemResponse> alteracaoPredio(@PathVariable Long idPredio,
-                                             @RequestBody @Valid PredioUpdateRequest request){
+    public ResponseEntity<HospedagemResponseDTO> alteracaoPredio(@PathVariable Long idPredio,
+                                                                 @RequestBody @Valid PredioUpdateRequestDTO request){
         return ResponseEntity.status(HttpStatus.OK).body(service.alterarPredio(idPredio , request));
     }
     @PutMapping("/quarto/{idQuarto}")
     @Operation(summary = "Altera quarto")
-    public ResponseEntity<HospedagemResponse> alteracaoQuarto(@PathVariable Long idQuarto,
-                                             @RequestBody @Valid QuartoUpdateRequest request){
+    public ResponseEntity<HospedagemResponseDTO> alteracaoQuarto(@PathVariable Long idQuarto,
+                                                                 @RequestBody @Valid QuartoUpdateRequestDTO request){
         return ResponseEntity.status(HttpStatus.OK).body(service.alterarQuarto(idQuarto, request));
     }
     @DeleteMapping("/{idHospedagem}")

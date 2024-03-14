@@ -2,9 +2,9 @@ package br.com.fiap.hackgrupo01.service.impl;
 
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ServicoMapper;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequest;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.model.opcionais.Servico;
 import br.com.fiap.hackgrupo01.repository.ServicoRepository;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
@@ -25,26 +25,26 @@ public class ServicoServiceImpl implements ServicoService {
     private final ServicoMapper mapper;
 
     @Override
-    public ServicoResponse salvarServico(ServicoRequest servico) {
+    public ServicoResponseDTO salvarServico(ServicoRequestDTO servico) {
         hospedagemService.buscarHospedagemPorId(servico.getHospedagem().getId());
         return mapper.toResponse(servicoRepository.save(mapper.toModel(servico)));
     }
 
     @Override
-    public ServicoResponse alterarServico(Long id, ServicoUpdateRequest request) {
+    public ServicoResponseDTO alterarServico(Long id, ServicoUpdateRequestDTO request) {
         Servico servico = findById(id);
         servico.altera(request);
         return mapper.toResponse(servicoRepository.save(servico));
     }
 
     @Override
-    public List<ServicoResponse> listarServicosPorHospedagem(Long idHospedagem) {
+    public List<ServicoResponseDTO> listarServicosPorHospedagem(Long idHospedagem) {
         hospedagemService.buscarHospedagemPorId(idHospedagem);
         return mapper.toResponses(servicoRepository.findByHospedagemId(idHospedagem));
     }
 
     @Override
-    public ServicoResponse buscarServicoPorId(Long id) {
+    public ServicoResponseDTO buscarServicoPorId(Long id) {
         return mapper.toResponse(findById(id));
     }
 

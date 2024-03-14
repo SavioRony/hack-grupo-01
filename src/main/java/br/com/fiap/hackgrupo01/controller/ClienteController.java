@@ -1,7 +1,7 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponseDTO;
 import br.com.fiap.hackgrupo01.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,27 +25,27 @@ public class ClienteController {
 
     @GetMapping
     @Operation(summary = "Buscar todos os clientes")
-    public ResponseEntity<List<ClienteResponse>> findAll(){
+    public ResponseEntity<List<ClienteResponseDTO>> findAll(){
         var response = service.buscarClientes();
         return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar clientes por id")
-    public ResponseEntity<ClienteResponse> findById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<ClienteResponseDTO> findById(@PathVariable(name = "id") Long id){
         return ResponseEntity.ok(service.buscarClientePorId(id));
     }
 
     @PostMapping
     @Operation(summary = "Cadastro de Cliente")
-    public ResponseEntity<ClienteResponse> create(@Valid @RequestBody ClienteRequest dto){
+    public ResponseEntity<ClienteResponseDTO> create(@Valid @RequestBody ClienteRequestDTO dto){
         validateFields(dto);
         return ResponseEntity.ok(service.salvarCliente(dto));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Edição de Cliente")
-    public ResponseEntity<ClienteResponse> update(@Valid @PathVariable(name = "id") Long id, @RequestBody ClienteRequest dto){
+    public ResponseEntity<ClienteResponseDTO> update(@Valid @PathVariable(name = "id") Long id, @RequestBody ClienteRequestDTO dto){
         validateFields(dto);
         return ResponseEntity.ok(service.alterarCliente(dto, id));
     }

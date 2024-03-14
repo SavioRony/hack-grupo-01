@@ -3,8 +3,8 @@ package br.com.fiap.hackgrupo01.service.impl;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ClienteMapper;
 import br.com.fiap.hackgrupo01.model.cliente.Cliente;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequest;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponseDTO;
 import br.com.fiap.hackgrupo01.repository.ClienteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,20 +31,20 @@ class ClienteServiceImplTest {
     @InjectMocks
     private ClienteServiceImpl service;
 
-    private ClienteRequest clienteRequest;
-    private ClienteResponse clienteResponse;
+    private ClienteRequestDTO clienteRequest;
+    private ClienteResponseDTO clienteResponse;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        clienteRequest = new ClienteRequest();
+        clienteRequest = new ClienteRequestDTO();
         clienteRequest.setNomeCompleto("João Silva");
         clienteRequest.setCpf("12345678900");
         clienteRequest.setEmail("joao@example.com");
         clienteRequest.setTelefone("(11) 98765-4321");
 
-        clienteResponse = new ClienteResponse();
+        clienteResponse = new ClienteResponseDTO();
         clienteResponse.setNomeCompleto("João Silva");
         clienteResponse.setCpf("12345678900");
         clienteResponse.setEmail("joao@example.com");
@@ -54,11 +54,11 @@ class ClienteServiceImplTest {
     @Test
     @DisplayName("Teste para buscar todos os clientes")
     void testFindAll() {
-        List<ClienteResponse> clientes = Collections.singletonList(clienteResponse);
+        List<ClienteResponseDTO> clientes = Collections.singletonList(clienteResponse);
         when(repository.findAll()).thenReturn(Collections.emptyList());
         when(mapper.toResponses(Collections.emptyList())).thenReturn(clientes);
 
-        List<ClienteResponse> result = service.buscarClientes();
+        List<ClienteResponseDTO> result = service.buscarClientes();
 
         assertEquals(clientes, result);
     }
@@ -70,7 +70,7 @@ class ClienteServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.of(new Cliente()));
         when(mapper.toResponse(any())).thenReturn(clienteResponse);
 
-        ClienteResponse result = service.buscarClientePorId(id);
+        ClienteResponseDTO result = service.buscarClientePorId(id);
 
         assertNotNull(result);
         assertEquals(clienteResponse, result);
@@ -91,7 +91,7 @@ class ClienteServiceImplTest {
         when(repository.save(any())).thenReturn(new Cliente());
         when(mapper.toResponse(any())).thenReturn(clienteResponse);
 
-        ClienteResponse result = service.salvarCliente(clienteRequest);
+        ClienteResponseDTO result = service.salvarCliente(clienteRequest);
 
         assertNotNull(result);
         assertEquals(clienteResponse, result);
@@ -105,7 +105,7 @@ class ClienteServiceImplTest {
         when(repository.save(any())).thenReturn(new Cliente());
         when(mapper.toResponse(any())).thenReturn(clienteResponse);
 
-        ClienteResponse result = service.alterarCliente(clienteRequest, id);
+        ClienteResponseDTO result = service.alterarCliente(clienteRequest, id);
 
         assertNotNull(result);
         assertEquals(clienteResponse, result);
