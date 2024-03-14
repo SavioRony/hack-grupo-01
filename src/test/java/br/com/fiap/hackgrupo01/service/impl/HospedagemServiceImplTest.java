@@ -64,7 +64,7 @@ class HospedagemServiceImplTest {
         HospedagemResponse expectedResponse = new HospedagemResponse();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.cadastroHospedagem(request);
+        HospedagemResponse response = service.salvarHospedagem(request);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).save(hospedagem);
@@ -86,7 +86,7 @@ class HospedagemServiceImplTest {
         HospedagemResponse expectedResponse = new HospedagemResponse();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.cadastroPredio(request);
+        HospedagemResponse response = service.salvarPredio(request);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).save(hospedagem);
@@ -112,7 +112,7 @@ class HospedagemServiceImplTest {
         HospedagemResponse expectedResponse = new HospedagemResponse();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.cadastroQuarto(request);
+        HospedagemResponse response = service.salvarQuarto(request);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).save(hospedagem);
@@ -140,7 +140,7 @@ class HospedagemServiceImplTest {
 
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(null);
 
-        HospedagemResponse response = service.cadastroQuarto(request);
+        HospedagemResponse response = service.salvarQuarto(request);
 
         assertEquals(null, response);
         verify(repository, times(1)).save(hospedagem);
@@ -153,7 +153,7 @@ class HospedagemServiceImplTest {
 
         when(repository.getReferenceById(any())).thenThrow(EntityNotFoundException.class);
 
-        assertThrows(NotFoundException.class, () -> service.cadastroPredio(request));
+        assertThrows(NotFoundException.class, () -> service.salvarPredio(request));
     }
 
     @Test
@@ -164,7 +164,7 @@ class HospedagemServiceImplTest {
 
         when(repository.findByPredioId(any())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.cadastroQuarto(request));
+        assertThrows(NotFoundException.class, () -> service.salvarQuarto(request));
     }
 
     @Test
@@ -266,7 +266,7 @@ class HospedagemServiceImplTest {
         when(repository.findById(idHospedagem)).thenReturn(Optional.of(hospedagem));
         when(repository.save(any())).thenReturn(hospedagem);
 
-        service.alteracaoHospedagem(idHospedagem, request);
+        service.alterarHospedagem(idHospedagem, request);
 
         verify(repository, times(1)).save(hospedagem);
     }
@@ -285,7 +285,7 @@ class HospedagemServiceImplTest {
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.of(hospedagem));
         when(repository.save(any())).thenReturn(hospedagem);
 
-        service.alteracaoPredio(idPredio, request);
+        service.alterarPredio(idPredio, request);
 
         verify(repository, times(1)).save(hospedagem);
     }
@@ -299,7 +299,7 @@ class HospedagemServiceImplTest {
         when(repository.findByQuartoId(idQuarto)).thenReturn(Optional.of(hospedagem));
         when(repository.save(any())).thenReturn(hospedagem);
 
-        service.alteracaoQuarto(idQuarto, request);
+        service.alterarQuarto(idQuarto, request);
 
         verify(repository, times(1)).save(hospedagem);
     }
@@ -350,7 +350,7 @@ class HospedagemServiceImplTest {
         HospedagemRequest request = new HospedagemRequest();
         when(repository.findById(idHospedagem)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alteracaoHospedagem(idHospedagem, request));
+        assertThrows(NotFoundException.class, () -> service.alterarHospedagem(idHospedagem, request));
     }
 
     @Test
@@ -360,7 +360,7 @@ class HospedagemServiceImplTest {
         PredioUpdateRequest request = new PredioUpdateRequest();
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alteracaoPredio(idPredio, request));
+        assertThrows(NotFoundException.class, () -> service.alterarPredio(idPredio, request));
     }
 
     @Test
@@ -370,7 +370,7 @@ class HospedagemServiceImplTest {
         QuartoUpdateRequest request = new QuartoUpdateRequest();
         when(repository.findByQuartoId(idQuarto)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alteracaoQuarto(idQuarto, request));
+        assertThrows(NotFoundException.class, () -> service.alterarQuarto(idQuarto, request));
     }
 
     @Test

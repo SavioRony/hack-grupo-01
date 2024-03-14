@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.br.CPF;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteDTO {
+public class ClienteResponse {
 
     private Long id;
 

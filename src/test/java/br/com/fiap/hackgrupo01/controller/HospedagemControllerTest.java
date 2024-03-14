@@ -35,7 +35,7 @@ class HospedagemControllerTest {
     void testCadastroHospedagem() {
         HospedagemRequest request = new HospedagemRequest();
         HospedagemResponse response = new HospedagemResponse();
-        when(service.cadastroHospedagem(request)).thenReturn(response);
+        when(service.salvarHospedagem(request)).thenReturn(response);
 
         ResponseEntity<HospedagemResponse> result = controller.cadastroHospedagem(request);
 
@@ -48,7 +48,7 @@ class HospedagemControllerTest {
     void testCadastroPredio() {
         PredioRequest request = new PredioRequest();
         HospedagemResponse response = new HospedagemResponse();
-        when(service.cadastroPredio(request)).thenReturn(response);
+        when(service.salvarPredio(request)).thenReturn(response);
 
         ResponseEntity<HospedagemResponse> result = controller.cadastroPredio(request);
 
@@ -61,7 +61,7 @@ class HospedagemControllerTest {
     void testCadastroQuarto() {
         QuartoRequest request = new QuartoRequest();
         HospedagemResponse response = new HospedagemResponse();
-        when(service.cadastroQuarto(request)).thenReturn(response);
+        when(service.salvarQuarto(request)).thenReturn(response);
 
         ResponseEntity<HospedagemResponse> result = controller.cadastroQuarto(request);
 
@@ -126,7 +126,7 @@ class HospedagemControllerTest {
         long idHospedagem = 1L;
         HospedagemRequest request = new HospedagemRequest();
         HospedagemResponse response = new HospedagemResponse();
-        when(service.alteracaoHospedagem(idHospedagem, request)).thenReturn(response);
+        when(service.alterarHospedagem(idHospedagem, request)).thenReturn(response);
 
         ResponseEntity<HospedagemResponse> result = controller.alteracaoHospedagem(idHospedagem, request);
 
@@ -140,7 +140,7 @@ class HospedagemControllerTest {
         long idPredio = 1L;
         PredioUpdateRequest request = new PredioUpdateRequest();
         HospedagemResponse response = new HospedagemResponse();
-        when(service.alteracaoPredio(idPredio, request)).thenReturn(response);
+        when(service.alterarPredio(idPredio, request)).thenReturn(response);
 
         ResponseEntity<HospedagemResponse> result = controller.alteracaoPredio(idPredio, request);
 
@@ -154,7 +154,7 @@ class HospedagemControllerTest {
         long idQuarto = 1L;
         QuartoUpdateRequest request = new QuartoUpdateRequest();
         HospedagemResponse response = new HospedagemResponse();
-        when(service.alteracaoQuarto(idQuarto, request)).thenReturn(response);
+        when(service.alterarQuarto(idQuarto, request)).thenReturn(response);
 
         ResponseEntity<?> result = controller.alteracaoQuarto(idQuarto, request);
 
