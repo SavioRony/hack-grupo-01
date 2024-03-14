@@ -18,7 +18,6 @@ import br.com.fiap.hackgrupo01.service.ClienteService;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
 import br.com.fiap.hackgrupo01.service.ReservaService;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -116,7 +115,6 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
 
-    @NotNull
     private Reserva validarReserva(ReservaRequestDTO reserva) {
         Quarto quarto = quartoRepository.findById(reserva.getQuarto().getId()).orElseThrow(() -> {
             throw new NotFoundException("Quarto não encontrado!");
@@ -146,18 +144,22 @@ public class ReservaServiceImpl implements ReservaService {
 
     private double calcularTotalOpcionais(Long idHospedagem, List<ItemReservaRequestDTO> itens, List<ServicoReservaRequestDTO> servicos) {
         double totalOpcionais = 0;
-        for (ItemReservaRequestDTO i : itens) {
-            Item item = itemRepository.findByIdAndHospedagemId(i.getItem().getId(), idHospedagem).orElseThrow(() -> {
-                throw new NotFoundException("Item " + i.getItem().getId() + " não esta disponivel para o quarto");
-            });
-            totalOpcionais += (i.getQuantidade() * item.getValor());
+        if(itens != null){
+            for (ItemReservaRequestDTO i : itens) {
+                Item item = itemRepository.findByIdAndHospedagemId(i.getItem().getId(), idHospedagem).orElseThrow(() -> {
+                    throw new NotFoundException("Item " + i.getItem().getId() + " não esta disponivel para o quarto");
+                });
+                totalOpcionais += (i.getQuantidade() * item.getValor());
+            }
         }
 
-        for (ServicoReservaRequestDTO s : servicos) {
-            Servico servico = servicoRepository.findByIdAndHospedagemId(s.getServico().getId(), idHospedagem).orElseThrow(() -> {
-                throw new NotFoundException("Serviço " + s.getServico().getId() + " não esta disponivel para o quarto");
-            });
-            totalOpcionais += servico.getValor();
+        if(servicos != null){
+            for (ServicoReservaRequestDTO s : servicos) {
+                Servico servico = servicoRepository.findByIdAndHospedagemId(s.getServico().getId(), idHospedagem).orElseThrow(() -> {
+                    throw new NotFoundException("Serviço " + s.getServico().getId() + " não esta disponivel para o quarto");
+                });
+                totalOpcionais += servico.getValor();
+            }
         }
         return totalOpcionais;
     }
