@@ -2,10 +2,10 @@ package br.com.fiap.hackgrupo01.service.impl;
 
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ServicoMapper;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestId;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequest;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestIdDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.model.opcionais.Servico;
 import br.com.fiap.hackgrupo01.repository.ServicoRepository;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
@@ -37,22 +37,22 @@ class ServicoServiceImplTest {
     @InjectMocks
     private ServicoServiceImpl service;
 
-    private ServicoRequest servicoRequest;
+    private ServicoRequestDTO servicoRequest;
     private Servico servico;
-    private ServicoResponse servicoResponse;
+    private ServicoResponseDTO servicoResponse;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        servicoRequest = new ServicoRequest();
-        HospedagemRequestId hospedagemRequestId = new HospedagemRequestId();
+        servicoRequest = new ServicoRequestDTO();
+        HospedagemRequestIdDTO hospedagemRequestId = new HospedagemRequestIdDTO();
         hospedagemRequestId.setId(1L);
         servicoRequest.setHospedagem(hospedagemRequestId);
 
         servico = new Servico();
 
-        servicoResponse = new ServicoResponse();
+        servicoResponse = new ServicoResponseDTO();
     }
 
     @Test
@@ -63,7 +63,7 @@ class ServicoServiceImplTest {
         when(servicoRepository.save(servico)).thenReturn(servico);
         when(mapper.toResponse(servico)).thenReturn(servicoResponse);
 
-        ServicoResponse result = service.salvarServico(servicoRequest);
+        ServicoResponseDTO result = service.salvarServico(servicoRequest);
 
         assertNotNull(result);
     }
@@ -72,11 +72,11 @@ class ServicoServiceImplTest {
     @DisplayName("Teste para alterar serviço")
     void testAlterarServico() {
         long id = 1L;
-        ServicoUpdateRequest request = new ServicoUpdateRequest();
+        ServicoUpdateRequestDTO request = new ServicoUpdateRequestDTO();
         when(servicoRepository.findById(id)).thenReturn(Optional.of(servico));
         when(mapper.toResponse(servico)).thenReturn(servicoResponse);
 
-        ServicoResponse result = service.alterarServico(id, request);
+        ServicoResponseDTO result = service.alterarServico(id, request);
 
         assertNull(result);
     }
@@ -89,7 +89,7 @@ class ServicoServiceImplTest {
         when(servicoRepository.findByHospedagemId(idHospedagem)).thenReturn(Collections.emptyList());
         when(mapper.toResponses(Collections.emptyList())).thenReturn(Collections.emptyList());
 
-        List<ServicoResponse> result = service.listarServicosPorHospedagem(idHospedagem);
+        List<ServicoResponseDTO> result = service.listarServicosPorHospedagem(idHospedagem);
 
         assertNotNull(result);
     }
@@ -101,7 +101,7 @@ class ServicoServiceImplTest {
         when(servicoRepository.findById(id)).thenReturn(Optional.of(servico));
         when(mapper.toResponse(servico)).thenReturn(servicoResponse);
 
-        ServicoResponse result = service.buscarServicoPorId(id);
+        ServicoResponseDTO result = service.buscarServicoPorId(id);
 
         assertNotNull(result);
     }

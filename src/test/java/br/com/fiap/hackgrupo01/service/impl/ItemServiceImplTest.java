@@ -2,12 +2,11 @@ package br.com.fiap.hackgrupo01.service.impl;
 
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ItemMapper;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestId;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemRequest;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemUpdateRequest;
-import br.com.fiap.hackgrupo01.model.hospedagem.Hospedagem;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestIdDTO;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ItemUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.model.opcionais.Item;
 import br.com.fiap.hackgrupo01.repository.ItemRepository;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
@@ -39,32 +38,32 @@ class ItemServiceImplTest {
     @InjectMocks
     private ItemServiceImpl service;
 
-    private ItemRequest itemRequest;
-    private ItemUpdateRequest itemUpdateRequest;
+    private ItemRequestDTO itemRequest;
+    private ItemUpdateRequestDTO itemUpdateRequest;
     private Item item;
-    private ItemResponse itemResponse;
+    private ItemResponseDTO itemResponse;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        itemRequest = new ItemRequest();
-        HospedagemRequestId hospedagemRequestId = new HospedagemRequestId();
+        itemRequest = new ItemRequestDTO();
+        HospedagemRequestIdDTO hospedagemRequestId = new HospedagemRequestIdDTO();
         hospedagemRequestId.setId(1L);
         itemRequest.setHospedagem(hospedagemRequestId);
-        itemUpdateRequest = new ItemUpdateRequest();
+        itemUpdateRequest = new ItemUpdateRequestDTO();
         item = new Item();
-        itemResponse = new ItemResponse();
+        itemResponse = new ItemResponseDTO();
     }
 
     @Test
     @DisplayName("Teste para salvar item - sucesso")
     void testSalvarItemSuccess() {
-        when(hospedagemService.buscarHospedagemPorId(anyLong())).thenReturn(new HospedagemResponse());
+        when(hospedagemService.buscarHospedagemPorId(anyLong())).thenReturn(new HospedagemResponseDTO());
         when(itemRepository.save(any())).thenReturn(item);
         when(mapper.toResponse(any())).thenReturn(itemResponse);
 
-        ItemResponse result = service.salvarItem(itemRequest);
+        ItemResponseDTO result = service.salvarItem(itemRequest);
 
         assertNotNull(result);
     }
@@ -77,7 +76,7 @@ class ItemServiceImplTest {
         when(itemRepository.save(any())).thenReturn(item);
         when(mapper.toResponse(any())).thenReturn(itemResponse);
 
-        ItemResponse result = service.alterarItem(id, itemUpdateRequest);
+        ItemResponseDTO result = service.alterarItem(id, itemUpdateRequest);
 
         assertNotNull(result);
     }
@@ -86,11 +85,11 @@ class ItemServiceImplTest {
     @DisplayName("Teste para listar itens por hospedagem - sucesso")
     void testListarItensPorHospedagemSuccess() {
         long idHospedagem = 1L;
-        when(hospedagemService.buscarHospedagemPorId(idHospedagem)).thenReturn(new HospedagemResponse());
+        when(hospedagemService.buscarHospedagemPorId(idHospedagem)).thenReturn(new HospedagemResponseDTO());
         when(itemRepository.findByHospedagemId(idHospedagem)).thenReturn(Collections.singletonList(item));
         when(mapper.toResponses(Collections.singletonList(item))).thenReturn(Collections.singletonList(itemResponse));
 
-        List<ItemResponse> result = service.listarItensPorHospedagem(idHospedagem);
+        List<ItemResponseDTO> result = service.listarItensPorHospedagem(idHospedagem);
 
         assertNotNull(result);
     }
@@ -102,7 +101,7 @@ class ItemServiceImplTest {
         when(itemRepository.findById(id)).thenReturn(Optional.of(item));
         when(mapper.toResponse(any())).thenReturn(itemResponse);
 
-        ItemResponse result = service.buscarItemPorId(id);
+        ItemResponseDTO result = service.buscarItemPorId(id);
 
         assertNotNull(result);
     }
@@ -131,7 +130,7 @@ class ItemServiceImplTest {
         long id = 1L;
         when(itemRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alterarItem(id, new ItemUpdateRequest()));
+        assertThrows(NotFoundException.class, () -> service.alterarItem(id, new ItemUpdateRequestDTO()));
 
         verify(itemRepository, never()).save(any());
     }

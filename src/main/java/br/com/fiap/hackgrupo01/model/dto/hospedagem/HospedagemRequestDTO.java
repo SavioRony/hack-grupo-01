@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class HospedagemRequest {
+public class HospedagemRequestDTO {
     @NotBlank(message = "Nome não pode nulo ou vazio")
     private String nome;
     private List<String> amenidades;

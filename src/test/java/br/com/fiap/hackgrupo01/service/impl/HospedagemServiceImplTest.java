@@ -57,14 +57,14 @@ class HospedagemServiceImplTest {
     @Test
     @DisplayName("Teste para cadastro de hospedagem")
     void testCadastroHospedagem() {
-        HospedagemRequest request = new HospedagemRequest();
+        HospedagemRequestDTO request = new HospedagemRequestDTO();
         Hospedagem hospedagem = new Hospedagem();
         when(hospedagemMapper.toModel(request)).thenReturn(hospedagem);
         when(repository.save(hospedagem)).thenReturn(hospedagem);
-        HospedagemResponse expectedResponse = new HospedagemResponse();
+        HospedagemResponseDTO expectedResponse = new HospedagemResponseDTO();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.cadastroHospedagem(request);
+        HospedagemResponseDTO response = service.salvarHospedagem(request);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).save(hospedagem);
@@ -74,8 +74,8 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para cadastro de prédio")
     void testCadastroPredio() {
         long idHospedagem = 1L;
-        PredioRequest request = new PredioRequest();
-        HospedagemRequestId hospedagemRequestId = new HospedagemRequestId();
+        PredioRequestDTO request = new PredioRequestDTO();
+        HospedagemRequestIdDTO hospedagemRequestId = new HospedagemRequestIdDTO();
         hospedagemRequestId.setId(idHospedagem);
         request.setHospedagem(hospedagemRequestId);
         Hospedagem hospedagem = new Hospedagem();
@@ -83,10 +83,10 @@ class HospedagemServiceImplTest {
         Predio predio = new Predio();
         when(predioMapper.toModel(request)).thenReturn(predio);
         when(repository.save(hospedagem)).thenReturn(hospedagem);
-        HospedagemResponse expectedResponse = new HospedagemResponse();
+        HospedagemResponseDTO expectedResponse = new HospedagemResponseDTO();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.cadastroPredio(request);
+        HospedagemResponseDTO response = service.salvarPredio(request);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).save(hospedagem);
@@ -96,8 +96,8 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para cadastro de quarto")
     void testCadastroQuarto() {
         long idPredio = 1L;
-        QuartoRequest request = new QuartoRequest();
-        PredioRequestId predioRequestId = new PredioRequestId();
+        QuartoRequestDTO request = new QuartoRequestDTO();
+        PredioRequestIdDTO predioRequestId = new PredioRequestIdDTO();
         predioRequestId.setId(1L);
         request.setPredio(predioRequestId);
         Hospedagem hospedagem = new Hospedagem();
@@ -109,10 +109,10 @@ class HospedagemServiceImplTest {
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.of(hospedagem));
         when(quartoMapper.toModel(request)).thenReturn(new Quarto());
         when(repository.save(hospedagem)).thenReturn(hospedagem);
-        HospedagemResponse expectedResponse = new HospedagemResponse();
+        HospedagemResponseDTO expectedResponse = new HospedagemResponseDTO();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.cadastroQuarto(request);
+        HospedagemResponseDTO response = service.salvarQuarto(request);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).save(hospedagem);
@@ -122,8 +122,8 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para cadastro de quarto quando predio não possui o mesmo ID que o predio do request")
     void testCadastroQuartoPredioNotFoundInList() {
         long idPredioRequest = 1L;
-        QuartoRequest request = new QuartoRequest();
-        PredioRequestId predioRequestId = new PredioRequestId();
+        QuartoRequestDTO request = new QuartoRequestDTO();
+        PredioRequestIdDTO predioRequestId = new PredioRequestIdDTO();
         predioRequestId.setId(idPredioRequest);
         request.setPredio(predioRequestId);
 
@@ -140,7 +140,7 @@ class HospedagemServiceImplTest {
 
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(null);
 
-        HospedagemResponse response = service.cadastroQuarto(request);
+        HospedagemResponseDTO response = service.salvarQuarto(request);
 
         assertEquals(null, response);
         verify(repository, times(1)).save(hospedagem);
@@ -148,23 +148,23 @@ class HospedagemServiceImplTest {
     @Test
     @DisplayName("Teste para cadastro de prédio quando hospedagem não é encontrada")
     void testCadastroPredioHospedagemNotFound() {
-        PredioRequest request = new PredioRequest();
-        request.setHospedagem(new HospedagemRequestId());
+        PredioRequestDTO request = new PredioRequestDTO();
+        request.setHospedagem(new HospedagemRequestIdDTO());
 
         when(repository.getReferenceById(any())).thenThrow(EntityNotFoundException.class);
 
-        assertThrows(NotFoundException.class, () -> service.cadastroPredio(request));
+        assertThrows(NotFoundException.class, () -> service.salvarPredio(request));
     }
 
     @Test
     @DisplayName("Teste para cadastro de quarto quando prédio não é encontrado")
     void testCadastroQuartoPredioNotFound() {
-        QuartoRequest request = new QuartoRequest();
-        request.setPredio(new PredioRequestId());
+        QuartoRequestDTO request = new QuartoRequestDTO();
+        request.setPredio(new PredioRequestIdDTO());
 
         when(repository.findByPredioId(any())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.cadastroQuarto(request));
+        assertThrows(NotFoundException.class, () -> service.salvarQuarto(request));
     }
 
     @Test
@@ -173,10 +173,10 @@ class HospedagemServiceImplTest {
         List<Hospedagem> hospedagens = Collections.singletonList(new Hospedagem());
         when(repository.findAll()).thenReturn(hospedagens);
 
-        List<HospedagemResponse> expectedResponses = Collections.singletonList(new HospedagemResponse());
+        List<HospedagemResponseDTO> expectedResponses = Collections.singletonList(new HospedagemResponseDTO());
         when(hospedagemMapper.toResponses(hospedagens)).thenReturn(expectedResponses);
 
-        List<HospedagemResponse> responses = service.buscarHospedagens();
+        List<HospedagemResponseDTO> responses = service.buscarHospedagens();
 
         assertEquals(expectedResponses, responses);
         verify(repository, times(1)).findAll();
@@ -189,10 +189,10 @@ class HospedagemServiceImplTest {
         Hospedagem hospedagem = new Hospedagem();
         when(repository.findById(idHospedagem)).thenReturn(Optional.of(hospedagem));
 
-        HospedagemResponse expectedResponse = new HospedagemResponse();
+        HospedagemResponseDTO expectedResponse = new HospedagemResponseDTO();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.buscarHospedagemPorId(idHospedagem);
+        HospedagemResponseDTO response = service.buscarHospedagemPorId(idHospedagem);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).findById(idHospedagem);
@@ -205,10 +205,10 @@ class HospedagemServiceImplTest {
         Hospedagem hospedagem = new Hospedagem();
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.of(hospedagem));
 
-        HospedagemResponse expectedResponse = new HospedagemResponse();
+        HospedagemResponseDTO expectedResponse = new HospedagemResponseDTO();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.buscarHospedagemPorIdPredio(idPredio);
+        HospedagemResponseDTO response = service.buscarHospedagemPorIdPredio(idPredio);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).findByPredioId(idPredio);
@@ -221,10 +221,10 @@ class HospedagemServiceImplTest {
         Hospedagem hospedagem = new Hospedagem();
         when(repository.findByQuartoId(idQuarto)).thenReturn(Optional.of(hospedagem));
 
-        HospedagemResponse expectedResponse = new HospedagemResponse();
+        HospedagemResponseDTO expectedResponse = new HospedagemResponseDTO();
         when(hospedagemMapper.toResponse(hospedagem)).thenReturn(expectedResponse);
 
-        HospedagemResponse response = service.buscarHospedagemPorIdQuarto(idQuarto);
+        HospedagemResponseDTO response = service.buscarHospedagemPorIdQuarto(idQuarto);
 
         assertEquals(expectedResponse, response);
         verify(repository, times(1)).findByQuartoId(idQuarto);
@@ -261,12 +261,12 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para alterar uma hospedagem")
     void testAlteracaoHospedagem() {
         long idHospedagem = 1L;
-        HospedagemRequest request = new HospedagemRequest();
+        HospedagemRequestDTO request = new HospedagemRequestDTO();
         Hospedagem hospedagem = new Hospedagem();
         when(repository.findById(idHospedagem)).thenReturn(Optional.of(hospedagem));
         when(repository.save(any())).thenReturn(hospedagem);
 
-        service.alteracaoHospedagem(idHospedagem, request);
+        service.alterarHospedagem(idHospedagem, request);
 
         verify(repository, times(1)).save(hospedagem);
     }
@@ -275,7 +275,7 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para alterar um prédio")
     void testAlteracaoPredio() {
         long idPredio = 1L;
-        PredioUpdateRequest request = new PredioUpdateRequest();
+        PredioUpdateRequestDTO request = new PredioUpdateRequestDTO();
         Hospedagem hospedagem = new Hospedagem();
         Predio predio = new Predio();
         predio.setId(idPredio);
@@ -285,7 +285,7 @@ class HospedagemServiceImplTest {
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.of(hospedagem));
         when(repository.save(any())).thenReturn(hospedagem);
 
-        service.alteracaoPredio(idPredio, request);
+        service.alterarPredio(idPredio, request);
 
         verify(repository, times(1)).save(hospedagem);
     }
@@ -294,12 +294,12 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para alterar um quarto")
     void testAlteracaoQuarto() {
         long idQuarto = 1L;
-        QuartoUpdateRequest request = new QuartoUpdateRequest();
+        QuartoUpdateRequestDTO request = new QuartoUpdateRequestDTO();
         Hospedagem hospedagem = new Hospedagem();
         when(repository.findByQuartoId(idQuarto)).thenReturn(Optional.of(hospedagem));
         when(repository.save(any())).thenReturn(hospedagem);
 
-        service.alteracaoQuarto(idQuarto, request);
+        service.alterarQuarto(idQuarto, request);
 
         verify(repository, times(1)).save(hospedagem);
     }
@@ -347,30 +347,30 @@ class HospedagemServiceImplTest {
     @DisplayName("Teste para alteração de hospedagem quando não encontrada")
     void testAlteracaoHospedagemNotFound() {
         long idHospedagem = 1L;
-        HospedagemRequest request = new HospedagemRequest();
+        HospedagemRequestDTO request = new HospedagemRequestDTO();
         when(repository.findById(idHospedagem)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alteracaoHospedagem(idHospedagem, request));
+        assertThrows(NotFoundException.class, () -> service.alterarHospedagem(idHospedagem, request));
     }
 
     @Test
     @DisplayName("Teste para alteração de prédio quando hospedagem não encontrada ou id do prédio inválido")
     void testAlteracaoPredioNotFound() {
         long idPredio = 1L;
-        PredioUpdateRequest request = new PredioUpdateRequest();
+        PredioUpdateRequestDTO request = new PredioUpdateRequestDTO();
         when(repository.findByPredioId(idPredio)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alteracaoPredio(idPredio, request));
+        assertThrows(NotFoundException.class, () -> service.alterarPredio(idPredio, request));
     }
 
     @Test
     @DisplayName("Teste para alteração de quarto quando hospedagem não encontrada ou id do quarto inválido")
     void testAlteracaoQuartoNotFound() {
         long idQuarto = 1L;
-        QuartoUpdateRequest request = new QuartoUpdateRequest();
+        QuartoUpdateRequestDTO request = new QuartoUpdateRequestDTO();
         when(repository.findByQuartoId(idQuarto)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> service.alteracaoQuarto(idQuarto, request));
+        assertThrows(NotFoundException.class, () -> service.alterarQuarto(idQuarto, request));
     }
 
     @Test

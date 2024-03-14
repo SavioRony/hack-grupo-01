@@ -1,8 +1,8 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequest;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.service.ServicoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,18 +27,18 @@ class ServicoControllerTest {
     @InjectMocks
     private ServicoController servicoController;
 
-    private ServicoRequest servicoRequest;
-    private ServicoResponse servicoResponse;
+    private ServicoRequestDTO servicoRequest;
+    private ServicoResponseDTO servicoResponse;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        servicoRequest = new ServicoRequest();
+        servicoRequest = new ServicoRequestDTO();
         servicoRequest.setNome("Wi-Fi");
         servicoRequest.setValor(10.0);
 
-        servicoResponse = new ServicoResponse();
+        servicoResponse = new ServicoResponseDTO();
         servicoResponse.setId(1L);
         servicoResponse.setNome("Wi-Fi");
         servicoResponse.setValor(10.0);
@@ -49,7 +49,7 @@ class ServicoControllerTest {
     void testSalvarServico() {
         when(servicoService.salvarServico(servicoRequest)).thenReturn(servicoResponse);
 
-        ResponseEntity<ServicoResponse> responseEntity = servicoController.salvarServico(servicoRequest);
+        ResponseEntity<ServicoResponseDTO> responseEntity = servicoController.salvarServico(servicoRequest);
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(servicoResponse, responseEntity.getBody());
@@ -59,12 +59,12 @@ class ServicoControllerTest {
     @DisplayName("Teste para alterar serviço")
     void testAlterarServico() {
         long id = 1L;
-        ServicoUpdateRequest servicoUpdateRequest = new ServicoUpdateRequest();
+        ServicoUpdateRequestDTO servicoUpdateRequest = new ServicoUpdateRequestDTO();
         servicoUpdateRequest.setNome("Wi-Fi");
         servicoUpdateRequest.setValor(15.0);
         when(servicoService.alterarServico(id, servicoUpdateRequest)).thenReturn(servicoResponse);
 
-        ResponseEntity<ServicoResponse> responseEntity = servicoController.alterarServico(id, servicoUpdateRequest);
+        ResponseEntity<ServicoResponseDTO> responseEntity = servicoController.alterarServico(id, servicoUpdateRequest);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(servicoResponse, responseEntity.getBody());
@@ -74,10 +74,10 @@ class ServicoControllerTest {
     @DisplayName("Teste para buscar serviço por hospedagem")
     void testListarServicosPorHospedagem() {
         long idHospedagem = 1L;
-        List<ServicoResponse> servicoResponses = Collections.singletonList(servicoResponse);
+        List<ServicoResponseDTO> servicoResponses = Collections.singletonList(servicoResponse);
         when(servicoService.listarServicosPorHospedagem(idHospedagem)).thenReturn(servicoResponses);
 
-        ResponseEntity<List<ServicoResponse>> responseEntity = servicoController.listarServicosPorHospedagem(idHospedagem);
+        ResponseEntity<List<ServicoResponseDTO>> responseEntity = servicoController.listarServicosPorHospedagem(idHospedagem);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(servicoResponses, responseEntity.getBody());
@@ -89,7 +89,7 @@ class ServicoControllerTest {
         long id = 1L;
         when(servicoService.buscarServicoPorId(id)).thenReturn(servicoResponse);
 
-        ResponseEntity<ServicoResponse> responseEntity = servicoController.buscarServicoPorId(id);
+        ResponseEntity<ServicoResponseDTO> responseEntity = servicoController.buscarServicoPorId(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(servicoResponse, responseEntity.getBody());

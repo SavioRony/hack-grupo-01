@@ -1,6 +1,6 @@
 package br.com.fiap.hackgrupo01.model.opcionais;
 
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.model.hospedagem.Hospedagem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class Servico {
     @JoinColumn(name = "hospedagem_id")
     private Hospedagem hospedagem;
 
-    public void altera(ServicoUpdateRequest servicoRequest){
+    public void altera(ServicoUpdateRequestDTO servicoRequest){
         this.nome = servicoRequest.getNome();
         this.valor = servicoRequest.getValor();
     }

@@ -1,8 +1,8 @@
 package br.com.fiap.hackgrupo01.model.hospedagem;
 
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioUpdateRequest;
-import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.PredioUpdateRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.QuartoUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.model.opcionais.Item;
 import br.com.fiap.hackgrupo01.model.opcionais.Servico;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,13 +39,13 @@ public class Hospedagem {
     @JsonIgnore
     @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> itens;
-    public void alteracaoHospedagem(HospedagemRequest request) {
+    public void alteracaoHospedagem(HospedagemRequestDTO request) {
         this.nome = request.getNome();
         this.amenidades = request.getAmenidades();
         this.endereco = request.getEndereco();
     }
 
-    public void alteracaoPredio(Long idPredio, PredioUpdateRequest request) {
+    public void alteracaoPredio(Long idPredio, PredioUpdateRequestDTO request) {
         for(Predio predio : this.getPredios()){
             if(predio.getId().equals(idPredio)){
                 predio.setNome(request.getNome());
@@ -54,7 +54,7 @@ public class Hospedagem {
         }
     }
 
-    public void alteracaoQuarto(Long idQuarto, QuartoUpdateRequest request) {
+    public void alteracaoQuarto(Long idQuarto, QuartoUpdateRequestDTO request) {
         for(Predio predio : this.getPredios()){
             for(Quarto quarto : predio.getQuartos()){
                 if(quarto.getId().equals(idQuarto)){
@@ -62,6 +62,8 @@ public class Hospedagem {
                     quarto.setTipo(request.getTipo());
                     quarto.setOutrosMoveis(request.getOutrosMoveis());
                     quarto.setTotalPessoas(request.getTotalPessoas());
+                    quarto.setBanheiro(request.getBanheiro());
+                    quarto.setQuantidade(request.getQuantidade());
                     return;
                 }
             }

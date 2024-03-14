@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class PredioRequestId {
+public class PredioRequestIdDTO {
     @NotNull(message = "Id do predio não pode ser nulo.")
     private Long id;
 }

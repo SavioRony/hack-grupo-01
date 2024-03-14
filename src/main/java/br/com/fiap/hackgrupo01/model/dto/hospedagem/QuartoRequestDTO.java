@@ -10,7 +10,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class QuartoRequest {
+public class QuartoRequestDTO {
     @NotBlank(message = "Não pode ser nulo ou vazio")
     private String tipo;
     @Min(value = 1, message = "Quantidade minima de pessoas permitido é 1")
@@ -23,5 +23,5 @@ public class QuartoRequest {
     private Double valorDiaria;
     private int quantidade;
     @Valid
-    private PredioRequestId predio;
+    private PredioRequestIdDTO predio;
 }

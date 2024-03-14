@@ -1,8 +1,8 @@
 package br.com.fiap.hackgrupo01.controller;
 
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequest;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponse;
-import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequest;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.opcionais.ServicoUpdateRequestDTO;
 import br.com.fiap.hackgrupo01.service.ServicoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,25 +24,25 @@ public class ServicoController {
 
     @PostMapping
     @Operation(summary = "Cadastro de serviço")
-    public ResponseEntity<ServicoResponse> salvarServico(@RequestBody @Valid ServicoRequest servico) {
+    public ResponseEntity<ServicoResponseDTO> salvarServico(@RequestBody @Valid ServicoRequestDTO servico) {
         return new ResponseEntity<>(servicoService.salvarServico(servico), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Alterar de serviço")
-    public ResponseEntity<ServicoResponse> alterarServico(@PathVariable Long id, @RequestBody @Valid ServicoUpdateRequest servico) {
+    public ResponseEntity<ServicoResponseDTO> alterarServico(@PathVariable Long id, @RequestBody @Valid ServicoUpdateRequestDTO servico) {
         return ResponseEntity.ok(servicoService.alterarServico(id,servico));
     }
 
     @GetMapping("/hospedagem/{idHospedagem}")
     @Operation(summary = "Buscar serviço por hospedagem")
-    public ResponseEntity<List<ServicoResponse>> listarServicosPorHospedagem(@PathVariable Long idHospedagem) {
+    public ResponseEntity<List<ServicoResponseDTO>> listarServicosPorHospedagem(@PathVariable Long idHospedagem) {
         return ResponseEntity.ok(servicoService.listarServicosPorHospedagem(idHospedagem));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar serviço por id")
-    public ResponseEntity<ServicoResponse> buscarServicoPorId(@PathVariable Long id) {
+    public ResponseEntity<ServicoResponseDTO> buscarServicoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(servicoService.buscarServicoPorId(id));
     }
 

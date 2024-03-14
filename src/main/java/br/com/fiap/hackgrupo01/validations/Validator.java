@@ -1,7 +1,7 @@
 package br.com.fiap.hackgrupo01.validations;
 
 import br.com.fiap.hackgrupo01.exception.BadRequestException;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteRequestDTO;
 
 public class Validator {
 
@@ -9,7 +9,7 @@ public class Validator {
 
     static final String PAIS_ORIGEM = "Brasil";
 
-    public static  void validateFields(ClienteDTO cliente){
+    public static  void validateFields(ClienteRequestDTO cliente){
 
         StringBuilder sb = new StringBuilder();
 
