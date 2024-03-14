@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,7 +68,14 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public List<Quarto> buscarQuartosDisponiveis(int quantidadeHospedes, LocalDate entrada, LocalDate saida) {
-        return quartoRepository.findQuartosDisponiveis(quantidadeHospedes, entrada, saida);
+        List<Quarto> quartosDisponiveisPelaQuantidadeDeHospedes = quartoRepository.findQuartosDisponiveis(quantidadeHospedes);
+        List<Quarto> quartosDisponivel = new ArrayList<>();
+        for(Quarto quarto : quartosDisponiveisPelaQuantidadeDeHospedes){
+            if(!validDate(quarto, entrada, saida)){
+                quartosDisponivel.add(quarto);
+            }
+        }
+        return quartosDisponivel;
     }
 
     @Override
@@ -82,7 +90,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
 
-    private void validDate(Quarto quartoSelecionado, LocalDate entrada, LocalDate saida) {
+    private boolean validDate(Quarto quartoSelecionado, LocalDate entrada, LocalDate saida) {
         if (entrada.isAfter(saida)) {
             throw new BadRequestException("A data de entrada não pode ser maior que a de saida");
         }
@@ -92,10 +100,8 @@ public class ReservaServiceImpl implements ReservaService {
         if (entrada.isBefore(LocalDate.now())) {
             throw new BadRequestException("A data de entrada não pode ser menor que data atual");
         }
-        boolean jaPossuiReserva = repository.existsReservaConflitante(quartoSelecionado.getId(), entrada, saida, quartoSelecionado.getQuantidade());
-        if (jaPossuiReserva) {
-            throw new BadRequestException("Não possui quartos disponiveis para essa data.");
-        }
+        return repository.existsReservaConflitante(quartoSelecionado.getId(), entrada, saida, quartoSelecionado.getQuantidade());
+
     }
 
     private Reserva validarReservaSalvar(ReservaRequestDTO reserva) {
@@ -116,7 +122,10 @@ public class ReservaServiceImpl implements ReservaService {
             throw new NotFoundException("Quarto não encontrado!");
         });
         HospedagemResponseDTO hospedagemResponse = hospedagemService.buscarHospedagemPorIdQuarto(reserva.getQuarto().getId());
-        validDate(quarto, reserva.getEntrada(), reserva.getSaida());
+        boolean possuiReserva = validDate(quarto, reserva.getEntrada(), reserva.getSaida());
+        if (possuiReserva) {
+            throw new BadRequestException("Não possui quartos disponiveis para essa data.");
+        }
         double totalOpcionais = calcularTotalOpcionais(hospedagemResponse.getId(), reserva.getItens(), reserva.getServicos());
         Reserva model = mapper.toModel(reserva);
         model.setValorTotal(calcularValorTotalValidaQuantidadePessoas(totalOpcionais, reserva));
