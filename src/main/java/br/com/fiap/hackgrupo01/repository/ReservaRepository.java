@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
-    @Query("SELECT COUNT(r) > 0 FROM Reserva r " +
+    @Query("SELECT COUNT(r) >= :quantidadeTotalQuartos FROM Reserva r " +
             "WHERE r.quarto.id = :quartoId " +
             "AND ((r.entrada BETWEEN :dataEntrada AND :dataSaida) OR " +
             "     (r.saida BETWEEN :dataEntrada AND :dataSaida) OR " +
@@ -18,5 +18,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
             "     (:dataSaida BETWEEN r.entrada AND r.saida))")
     boolean existsReservaConflitante(@Param("quartoId") Long quartoId,
                                      @Param("dataEntrada") LocalDate dataEntrada,
-                                     @Param("dataSaida") LocalDate dataSaida);
+                                     @Param("dataSaida") LocalDate dataSaida,
+                                     @Param("quantidadeTotalQuartos") int quantidadeTotalQuartos);
 }

@@ -38,4 +38,9 @@ public class Reserva {
     private LocalDate saida;
     private Integer quantidadeHospedes;
     private Double valorTotal;
+
+    public void update(Reserva model) {
+        this.setId(model.getId());
+        this.setCliente(model.getCliente());
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.fiap.hackgrupo01.controller;
 
 import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaRequestDTO;
+import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaRequestUpdateDTO;
 import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaResponseDTO;
 import br.com.fiap.hackgrupo01.model.hospedagem.Quarto;
 import br.com.fiap.hackgrupo01.service.ReservaService;
@@ -37,7 +38,7 @@ public class ReservaController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Edição de reserva")
-    ResponseEntity<ReservaResponseDTO> update(@Valid @RequestBody ReservaRequestDTO request, @PathVariable(name = "id") Long id){
+    ResponseEntity<ReservaResponseDTO> update(@Valid @RequestBody ReservaRequestUpdateDTO request, @PathVariable(name = "id") Long id){
         return ResponseEntity.ok(service.alterarReserva(request, id));
     }
 

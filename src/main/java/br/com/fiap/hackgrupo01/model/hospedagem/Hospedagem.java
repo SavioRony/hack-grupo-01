@@ -62,6 +62,8 @@ public class Hospedagem {
                     quarto.setTipo(request.getTipo());
                     quarto.setOutrosMoveis(request.getOutrosMoveis());
                     quarto.setTotalPessoas(request.getTotalPessoas());
+                    quarto.setBanheiro(request.getBanheiro());
+                    quarto.setQuantidade(request.getQuantidade());
                     return;
                 }
             }

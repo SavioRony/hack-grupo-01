@@ -1,5 +1,6 @@
 package br.com.fiap.hackgrupo01.service;
 
+import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaRequestUpdateDTO;
 import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaResponseDTO;
 import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaRequestDTO;
 import br.com.fiap.hackgrupo01.model.hospedagem.Quarto;
@@ -11,7 +12,7 @@ public interface ReservaService {
 
     ReservaResponseDTO salvarReserva(ReservaRequestDTO reserva);
 
-    ReservaResponseDTO alterarReserva(ReservaRequestDTO reserva, Long id);
+    ReservaResponseDTO alterarReserva(ReservaRequestUpdateDTO reserva, Long id);
 
     List<ReservaResponseDTO> buscarTodasReservaDoClientePorEmail(String email);
 

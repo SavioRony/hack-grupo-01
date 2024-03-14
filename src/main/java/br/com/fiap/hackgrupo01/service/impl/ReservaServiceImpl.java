@@ -18,6 +18,7 @@ import br.com.fiap.hackgrupo01.service.ClienteService;
 import br.com.fiap.hackgrupo01.service.HospedagemService;
 import br.com.fiap.hackgrupo01.service.ReservaService;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -44,18 +45,24 @@ public class ReservaServiceImpl implements ReservaService {
 
     private final ServicoRepository servicoRepository;
 
+    private final EmailServiceImpl emailService;
+
 
     @Override
     public ReservaResponseDTO salvarReserva(ReservaRequestDTO reserva) {
-        return mapper.toResponse(repository.save(validarReserva(reserva)));
+        Reserva model = validarReservaSalvar(reserva);
+        Reserva save = repository.save(model);
+        emailService.enviarConfirmacaoReserva(model);
+        return mapper.toResponse(save);
     }
 
     @Override
-    public ReservaResponseDTO alterarReserva(ReservaRequestDTO reserva, Long id) {
-        validaReservaExiste(id);
-        Reserva model = validarReserva(reserva);
-        model.setId(id);
-        return mapper.toResponse(repository.save(model));
+    public ReservaResponseDTO alterarReserva(ReservaRequestUpdateDTO reserva, Long id) {
+        Reserva model = validaReservaExiste(id);
+        Reserva reservaValidada = validarReservaAlterar(reserva);
+        reservaValidada.update(model);
+        emailService.enviarConfirmacaoReserva(reservaValidada);
+        return mapper.toResponse(repository.save(reservaValidada));
     }
 
     @Override
@@ -75,7 +82,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
 
-    private void validDate(QuartoRequestDTO quartoSelecionado, LocalDate entrada, LocalDate saida) {
+    private void validDate(Quarto quartoSelecionado, LocalDate entrada, LocalDate saida) {
         if (entrada.isAfter(saida)) {
             throw new BadRequestException("A data de entrada não pode ser maior que a de saida");
         }
@@ -85,20 +92,35 @@ public class ReservaServiceImpl implements ReservaService {
         if (entrada.isBefore(LocalDate.now())) {
             throw new BadRequestException("A data de entrada não pode ser menor que data atual");
         }
-        boolean jaPossuiReserva = repository.existsReservaConflitante(quartoSelecionado.getId(), entrada, saida);
+        boolean jaPossuiReserva = repository.existsReservaConflitante(quartoSelecionado.getId(), entrada, saida, quartoSelecionado.getQuantidade());
         if (jaPossuiReserva) {
-            throw new BadRequestException("Quarto ja esta reservado para data escolhida");
+            throw new BadRequestException("Não possui quartos disponiveis para essa data.");
         }
     }
 
-    private Reserva validarReserva(ReservaRequestDTO reserva) {
+    private Reserva validarReservaSalvar(ReservaRequestDTO reserva) {
         ClienteResponseDTO cliente = clienteService.buscarClientePorId(reserva.getCliente().getId());
+        Reserva validarReserva = validarReserva(reserva);
+        validarReserva.getCliente().setEmail(cliente.getEmail());
+        validarReserva.getCliente().setNomeCompleto(cliente.getNomeCompleto());
+        return validarReserva;
+    }
+    private Reserva validarReservaAlterar(ReservaRequestUpdateDTO reserva) {
+        return validarReserva(mapper.toRequest(reserva));
+    }
 
+
+    @NotNull
+    private Reserva validarReserva(ReservaRequestDTO reserva) {
+        Quarto quarto = quartoRepository.findById(reserva.getQuarto().getId()).orElseThrow(() -> {
+            throw new NotFoundException("Quarto não encontrado!");
+        });
         HospedagemResponseDTO hospedagemResponse = hospedagemService.buscarHospedagemPorIdQuarto(reserva.getQuarto().getId());
-        validDate(reserva.getQuarto(), reserva.getEntrada(), reserva.getSaida());
+        validDate(quarto, reserva.getEntrada(), reserva.getSaida());
         double totalOpcionais = calcularTotalOpcionais(hospedagemResponse.getId(), reserva.getItens(), reserva.getServicos());
         Reserva model = mapper.toModel(reserva);
         model.setValorTotal(calcularValorTotalValidaQuantidadePessoas(totalOpcionais, reserva));
+        model.setQuarto(quarto);
         return model;
     }
 
@@ -131,9 +153,9 @@ public class ReservaServiceImpl implements ReservaService {
         return totalOpcionais;
     }
 
-    private void validaReservaExiste(Long id) {
-        repository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Reserva não Encontrada !");
+    private Reserva validaReservaExiste(Long id) {
+        return repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Reserva não Encontrada!");
         });
     }
 

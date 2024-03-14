@@ -4,16 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReservaResponseDTO {
 
-    private ClienteRespondeDTO cliente;
-    private List<ItemReservaResponseDTO> itens;
-    private List<ServicoReservaResponseDTO> servicos;
-    private QuartoResponseDTO quarto;
+    private Long id;
     private LocalDate entrada;
     private LocalDate saida;
     private Integer quantidadeHospedes;
