@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ReservaService {
 
-    ReservaResponseDTO create(ReservaRequestDTO reserva);
+    ReservaResponseDTO salvarReserva(ReservaRequestDTO reserva);
 
-    ReservaResponseDTO update(ReservaRequestDTO reserva, Long id);
+    ReservaResponseDTO alterarReserva(ReservaRequestDTO reserva, Long id);
 
-    List<ReservaResponseDTO> findAll(String email);
+    List<ReservaResponseDTO> buscarTodasReservaDoClientePorEmail(String email);
 
-    void delete(Long id);
+    void deletarReserva(Long id);
 
-    List<Quarto> quartosDisponiveis(int quantidadeHospedes, LocalDate entrada, LocalDate saida);
+    List<Quarto> buscarQuartosDisponiveis(int quantidadeHospedes, LocalDate entrada, LocalDate saida);
 }

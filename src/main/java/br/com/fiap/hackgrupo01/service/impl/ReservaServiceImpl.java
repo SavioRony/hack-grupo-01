@@ -3,7 +3,7 @@ package br.com.fiap.hackgrupo01.service.impl;
 import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ReservaMapper;
-import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteResponse;
 import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponse;
 import br.com.fiap.hackgrupo01.model.dto.reserva.*;
 import br.com.fiap.hackgrupo01.model.hospedagem.Quarto;
@@ -46,12 +46,12 @@ public class ReservaServiceImpl implements ReservaService {
 
 
     @Override
-    public ReservaResponseDTO create(ReservaRequestDTO reserva) {
+    public ReservaResponseDTO salvarReserva(ReservaRequestDTO reserva) {
         return mapper.toResponse(repository.save(validarReserva(reserva)));
     }
 
     @Override
-    public ReservaResponseDTO update(ReservaRequestDTO reserva, Long id) {
+    public ReservaResponseDTO alterarReserva(ReservaRequestDTO reserva, Long id) {
         validaReservaExiste(id);
         Reserva model = validarReserva(reserva);
         model.setId(id);
@@ -59,17 +59,17 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public List<Quarto> quartosDisponiveis(int quantidadeHospedes, LocalDate entrada, LocalDate saida) {
+    public List<Quarto> buscarQuartosDisponiveis(int quantidadeHospedes, LocalDate entrada, LocalDate saida) {
         return quartoRepository.findQuartosDisponiveis(quantidadeHospedes, entrada, saida);
     }
 
     @Override
-    public List<ReservaResponseDTO> findAll(String email) {
+    public List<ReservaResponseDTO> buscarTodasReservaDoClientePorEmail(String email) {
         return mapper.toResponses(repository.findAll().stream().filter(x -> x.getCliente().getEmail().equalsIgnoreCase(email)).collect(Collectors.toList()));
     }
 
     @Override
-    public void delete(Long id) {
+    public void deletarReserva(Long id) {
         validaReservaExiste(id);
         repository.deleteById(id);
     }
@@ -92,7 +92,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     private Reserva validarReserva(ReservaRequestDTO reserva) {
-        ClienteDTO cliente = clienteService.findById(reserva.getCliente().getId());
+        ClienteResponse cliente = clienteService.buscarClientePorId(reserva.getCliente().getId());
 
         HospedagemResponse hospedagemResponse = hospedagemService.buscarHospedagemPorIdQuarto(reserva.getQuarto().getId());
         validDate(reserva.getQuarto(), reserva.getEntrada(), reserva.getSaida());
