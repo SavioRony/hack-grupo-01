@@ -165,3 +165,34 @@ curl -X PUT "http://localhost:8080/cliente/1" -H "Content-Type: application/json
 ```bash
 curl -X DELETE "http://localhost:8080/cliente/1"
 ```
+## Gestão de reservas
+
+### Cadastro de Reserva
+```bash
+curl -X POST "http://localhost:8080/reserva" -H "Content-Type: application/json" -d "{\"cliente\": {\"id\": 1}, \"quarto\": {\"id\": 1}, \"entrada\": \"2024-03-14\", \"saida\": \"2024-03-15\", \"quantidadeHospedes\": 2, \"itens\": [{\"quantidade\": 1, \"item\": {\"id\": 1}}], \"servicos\": [{\"servico\": {\"id\": 1}}]}"
+```
+
+### Edição de Reserva
+
+```bash
+curl -X PUT "http://localhost:8080/reserva/1" -H "Content-Type: application/json" -d "{\"quarto\": {\"id\": 1}, \"entrada\": \"2024-06-15\", \"saida\": \"2024-06-16\", \"quantidadeHospedes\": 2, \"itens\": [{\"quantidade\": 1, \"item\": {\"id\": 1}}], \"servicos\": [{\"servico\": {\"id\": 1}}]}"
+```
+
+### Exclusão de Reserva
+
+```bash
+curl -X DELETE "http://localhost:8080/reserva/1"
+```
+
+### Buscar quartos disponíveis
+
+```bash
+curl -X GET "http://localhost:8080/reserva?quantidade=2&entrada=2024-03-12&saida=2024-03-15"
+```
+
+### Buscar todas as reservas do cliente por email
+
+```bash
+curl -X GET "http://localhost:8080/reserva/cliente@example.com"
+```
+
