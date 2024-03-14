@@ -17,5 +17,5 @@ public interface ReservaService {
 
     void delete(Long id);
 
-    List<Quarto> quartosDisponiveis(int quantidadeHospedes);
+    List<Quarto> quartosDisponiveis(int quantidadeHospedes, LocalDate entrada, LocalDate saida);
 }

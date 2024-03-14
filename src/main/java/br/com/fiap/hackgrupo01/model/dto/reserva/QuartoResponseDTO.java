@@ -1,10 +1,12 @@
 package br.com.fiap.hackgrupo01.model.dto.reserva;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuartoResponseDTO {
 
     private Long id;
