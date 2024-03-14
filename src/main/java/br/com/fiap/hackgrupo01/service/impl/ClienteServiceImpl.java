@@ -1,5 +1,6 @@
 package br.com.fiap.hackgrupo01.service.impl;
 
+import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ClienteMapper;
 import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;

@@ -1,8 +1,5 @@
 package br.com.fiap.hackgrupo01.model.dto.cliente;
 
-import br.com.fiap.hackgrupo01.anotations.ValidCPF;
-import br.com.fiap.hackgrupo01.anotations.ValidPassaporte;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -23,11 +20,8 @@ public class ClienteDTO {
     private String paisOrigem;
 
     @CPF
-    @ValidCPF
-    @Column(unique = true)
     private String cpf;
 
-    @ValidPassaporte
     private String passaporte;
 
     @NotBlank

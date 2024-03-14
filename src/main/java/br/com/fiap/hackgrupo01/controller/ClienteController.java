@@ -4,6 +4,7 @@ import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
 import br.com.fiap.hackgrupo01.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static br.com.fiap.hackgrupo01.validations.Validator.validateFields;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,13 +39,15 @@ public class ClienteController {
 
     @PostMapping
     @Operation(summary = "Cadastro de Cliente")
-    public ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO dto){
+    ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO dto){
+        validateFields(dto);
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Edição de Cliente")
-    public ResponseEntity<ClienteDTO> update(@PathVariable(name = "id") Long id, @RequestBody ClienteDTO dto){
+    ResponseEntity<ClienteDTO> update(@Valid @PathVariable(name = "id") Long id, @RequestBody ClienteDTO dto){
+        validateFields(dto);
         return ResponseEntity.ok(service.update(dto, id));
     }
 
