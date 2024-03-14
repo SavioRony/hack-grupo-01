@@ -7,5 +7,5 @@ import lombok.Data;
 public class ServicoReservaRequest {
 
     @Valid
-    private ServicoReservaRefreshDTO servico;
+    private ServicoRequestDTO servico;
 }

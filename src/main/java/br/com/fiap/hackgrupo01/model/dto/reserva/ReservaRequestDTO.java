@@ -10,7 +10,7 @@ import java.util.List;
 public class ReservaRequestDTO {
 
     @NotNull
-    private ClienteReservaDTO cliente;
+    private ClienteRequestDTO cliente;
 
     private List<ItemReservaRequestDTO> itens;
     private List<ServicoReservaRequest> servicos;

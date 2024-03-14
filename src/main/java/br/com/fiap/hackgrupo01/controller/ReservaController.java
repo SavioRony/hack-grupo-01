@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +32,7 @@ public class ReservaController {
     @PostMapping
     @Operation(summary = "Cadastro de Reserva")
     ResponseEntity<ReservaResponseDTO> create(@Valid @RequestBody ReservaRequestDTO request){
-        return ResponseEntity.ok(service.salvarReserva(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarReserva(request));
     }
 
     @PutMapping("/{id}")
@@ -43,9 +43,9 @@ public class ReservaController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Deletar reserva")
-    ResponseEntity<?> delete(@PathVariable(name = "id") Long id){
+    ResponseEntity<Void> delete(@PathVariable(name = "id") Long id){
         service.deletarReserva(id);
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping

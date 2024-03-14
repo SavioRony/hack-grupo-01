@@ -6,4 +6,5 @@ import lombok.Data;
 public class ServicoReservaResponseDTO {
 
     private Long id;
+    private ServicoResponseDTO servico;
 }

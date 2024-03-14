@@ -6,5 +6,5 @@ import lombok.Data;
 public class ItemReservaRequestDTO {
 
     private Integer quantidade;
-    private ItemReservaRefreshDTO item;
+    private ItemRequestDTO item;
 }

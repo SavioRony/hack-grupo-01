@@ -10,10 +10,10 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReservaResponseDTO {
 
-    private ClienteReservaDTO cliente;
+    private ClienteRespondeDTO cliente;
     private List<ItemReservaResponseDTO> itens;
     private List<ServicoReservaResponseDTO> servicos;
-    private QuartoResponseIdDTO quarto;
+    private QuartoResponseDTO quarto;
     private LocalDate entrada;
     private LocalDate saida;
     private Integer quantidadeHospedes;

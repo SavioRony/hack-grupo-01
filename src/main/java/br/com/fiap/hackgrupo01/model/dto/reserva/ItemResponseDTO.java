@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ItemReservaRefreshDTO {
+public class ItemResponseDTO {
 
-    @NotNull
     private Long id;
+    private String nome;
+    private double valor;
 }
