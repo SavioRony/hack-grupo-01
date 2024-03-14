@@ -39,14 +39,14 @@ public class ClienteController {
 
     @PostMapping
     @Operation(summary = "Cadastro de Cliente")
-    ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO dto){
+    public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO dto){
         validateFields(dto);
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Edição de Cliente")
-    ResponseEntity<ClienteDTO> update(@Valid @PathVariable(name = "id") Long id, @RequestBody ClienteDTO dto){
+    public ResponseEntity<ClienteDTO> update(@Valid @PathVariable(name = "id") Long id, @RequestBody ClienteDTO dto){
         validateFields(dto);
         return ResponseEntity.ok(service.update(dto, id));
     }

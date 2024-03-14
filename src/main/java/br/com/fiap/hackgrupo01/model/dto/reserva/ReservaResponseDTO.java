@@ -11,10 +11,9 @@ import java.util.List;
 public class ReservaResponseDTO {
 
     private ClienteDTO cliente;
-    List<ItemReservaResponseDTO> items;
+    List<ItemReservaResponseDTO> itens;
     List<ServicoResponse> servicos;
-    private List<QuartoResponseDTO> quartos;
-
+    private QuartoResponseDTO quarto;
     private LocalDate entrada;
     private LocalDate saida;
     private Integer quantidadeHospedes;

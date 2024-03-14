@@ -1,49 +1,84 @@
 package br.com.fiap.hackgrupo01.service.impl;
 
+import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ReservaMapper;
-import br.com.fiap.hackgrupo01.model.dto.reserva.QuartoRequestDTO;
-import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaRequestDTO;
-import br.com.fiap.hackgrupo01.model.dto.reserva.ReservaResponseDTO;
+import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
+import br.com.fiap.hackgrupo01.model.dto.hospedagem.HospedagemResponse;
+import br.com.fiap.hackgrupo01.model.dto.reserva.*;
 import br.com.fiap.hackgrupo01.model.hospedagem.Quarto;
-import br.com.fiap.hackgrupo01.repository.ClienteRepository;
-import br.com.fiap.hackgrupo01.repository.QuartoRepository;
-import br.com.fiap.hackgrupo01.repository.ReservaRepository;
+import br.com.fiap.hackgrupo01.model.opcionais.Item;
+import br.com.fiap.hackgrupo01.model.opcionais.Servico;
+import br.com.fiap.hackgrupo01.model.reserva.Reserva;
+import br.com.fiap.hackgrupo01.repository.*;
+import br.com.fiap.hackgrupo01.service.ClienteService;
+import br.com.fiap.hackgrupo01.service.HospedagemService;
 import br.com.fiap.hackgrupo01.service.ReservaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReservaServiceImpl implements ReservaService {
 
 
-    @Autowired
-    protected QuartoRepository quartoRepository;
+    private final HospedagemService hospedagemService;
 
-    @Autowired
-    protected ReservaMapper mapper;
+    private final QuartoRepository quartoRepository;
 
-    @Autowired
-    protected ReservaRepository repository;
+    private final ReservaMapper mapper;
 
-    @Autowired
-    protected ClienteRepository clienteRepository;
+    private final ReservaRepository repository;
+
+    private final ClienteService clienteService;
+
+    private final ItemRepository itemRepository;
+
+    private final ServicoRepository servicoRepository;
+
 
     @Override
     public ReservaResponseDTO create(ReservaRequestDTO reserva) {
+        ClienteDTO cliente = clienteService.findById(reserva.getCliente().getId());
+        HospedagemResponse hospedagemResponse = hospedagemService.buscarHospedagemPorIdQuarto(reserva.getQuarto().getId());
 
-        var cliente = clienteRepository.findById(reserva.getCliente().getId());
+        validDate(reserva.getQuarto(), reserva.getEntrada(), reserva.getSaida());
+        double totalOpcionais = calcularTotalOpcionais(hospedagemResponse.getId(), reserva.getItens(), reserva.getServicos());
+        Reserva model = mapper.toModel(reserva);
+        model.setValorTotal(calcularValorTotal(totalOpcionais, reserva));
+        Reserva save = repository.save(model);
+        return  mapper.toResponse(save);
+    }
 
-        if(cliente.isEmpty()){
-            throw new NotFoundException("Cliente não cadastrado !");
+    private Double calcularValorTotal(double totalOpcionais, ReservaRequestDTO reserva) {
+        Quarto quarto = quartoRepository.findById(reserva.getQuarto().getId()).orElseThrow(() -> {
+            throw new NotFoundException("Quarto não encontrado!");
+        });
+        long diasEntre = ChronoUnit.DAYS.between(reserva.getEntrada(), reserva.getSaida());
+        return totalOpcionais + (quarto.getValorDiaria() * diasEntre);
+    }
+
+    private double calcularTotalOpcionais(Long idHospedagem, List<ItemReservaRequestDTO> itens, List<ServicoReservaRequest> servicos) {
+        double totalOpcionais = 0;
+        for(ItemReservaRequestDTO i : itens){
+            Item item = itemRepository.findByIdAndHospedagemId(i.getItem().getId(), idHospedagem).orElseThrow(() -> {
+                throw new NotFoundException("Item " + i.getItem().getId() + " não esta disponivel para o quarto");
+            });
+            totalOpcionais += (i.getQuantidade() * item.getValor());
         }
 
-        validDate(reserva.getQuartos(), reserva.getEntrada(), reserva.getSaida());
-        return  mapper.toResponse(repository.save(mapper.toModel(reserva)));
+        for(ServicoReservaRequest s : servicos){
+            Servico servico = servicoRepository.findByIdAndHospedagemId(s.getServico().getId(), idHospedagem).orElseThrow(() -> {
+                throw new NotFoundException("Serviço " + s.getServico().getId() + " não esta disponivel para o quarto");
+            });
+            totalOpcionais += servico.getValor();
+        }
+        return totalOpcionais;
     }
 
     @Override
@@ -55,7 +90,7 @@ public class ReservaServiceImpl implements ReservaService {
             throw new NotFoundException("Reserva não Encontrada !");
         }
 
-        validDate(reserva.getQuartos(), reserva.getEntrada(), reserva.getSaida());
+        validDate(reserva.getQuarto(), reserva.getEntrada(), reserva.getSaida());
         return  mapper.toResponse(repository.save(mapper.toModel(reserva)));
     }
 
@@ -75,6 +110,19 @@ public class ReservaServiceImpl implements ReservaService {
         repository.deleteById(id);
     }
 
+
+    private void validDate(QuartoRequestDTO quartoSelecionado, LocalDate entrada, LocalDate saida){
+        if(entrada.isAfter(saida)){
+            throw new BadRequestException("A data de entrada não pode ser maior que a de saida");
+        }
+        if(entrada.equals(saida)){
+            throw new BadRequestException("Não e possivel reserva a entrada e a saida para a mesma data");
+        }
+        boolean jaPossuiReserva = repository.existsReservaConflitante(quartoSelecionado.getId(), entrada, saida);
+        if(jaPossuiReserva){
+            throw new BadRequestException("Quarto ja esta reservado para data escolhida");
+        }
+    }
     @Override
     public List<Quarto> quartosDisponiveis(int quantidadeHospedes) {
 
@@ -85,27 +133,5 @@ public class ReservaServiceImpl implements ReservaService {
         }
 
         return allQuartos.stream().filter(x -> x.getQuantidade() >= quantidadeHospedes).toList();
-    }
-
-    private void validDate(List<QuartoRequestDTO> quartosSelecionados, LocalDate entrada, LocalDate saida){
-
-        StringBuilder sb = new StringBuilder();
-
-        for(QuartoRequestDTO quarto : quartosSelecionados){
-
-            var findQuarto = quartoRepository.findById(quarto.getId());
-
-            findQuarto.ifPresent(value -> value.getReserva().forEach(x -> verificaConflito(sb, quarto.getId(), entrada, saida, x.getEntrada(), x.getSaida())));
-
-            if(!sb.isEmpty()){
-                throw new NotFoundException(sb.toString());
-            }
-        }
-    }
-
-    public static void verificaConflito(StringBuilder sb,Long id,LocalDate inicio1, LocalDate fim1, LocalDate inicio2, LocalDate fim2) {
-        if (!((fim1.isBefore(inicio2) || fim1.isEqual(inicio2)) || (fim2.isBefore(inicio1) || fim2.isEqual(inicio1)))){
-            sb.append("quarto de id ").append(id).append(" tem conflito de datas").append(", favor escolher outro quarto");
-        }
     }
 }

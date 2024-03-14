@@ -1,6 +1,5 @@
 package br.com.fiap.hackgrupo01.service.impl;
 
-import br.com.fiap.hackgrupo01.exception.BadRequestException;
 import br.com.fiap.hackgrupo01.exception.NotFoundException;
 import br.com.fiap.hackgrupo01.mapper.ClienteMapper;
 import br.com.fiap.hackgrupo01.model.dto.cliente.ClienteDTO;
@@ -29,11 +28,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDTO findById(Long id) {
-        var response = repository.findById(id).map(cliente -> mapper.toResponse(cliente)).orElse(null);
-        if(response != null){
-            return response;
-        }
-        throw new NotFoundException(NOT_FOUND_MESSAGE.concat(id.toString()));
+        return repository.findById(id).map(cliente -> mapper.toResponse(cliente)).orElseThrow(() -> {
+            throw new NotFoundException(NOT_FOUND_MESSAGE.concat(id.toString()));
+        });
     }
 
     @Override

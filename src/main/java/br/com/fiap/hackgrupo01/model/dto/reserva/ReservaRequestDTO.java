@@ -12,9 +12,9 @@ public class ReservaRequestDTO {
     @NotNull
     private ClienteReservaDTO cliente;
 
-    List<ItemReservaRequestDTO> items;
-    List<ServicoReservaRequest> servicos;
-    private List<QuartoRequestDTO> quartos;
+    private List<ItemReservaRequestDTO> itens;
+    private List<ServicoReservaRequest> servicos;
+    private QuartoRequestDTO quarto;
 
     @NotNull
     private LocalDate entrada;

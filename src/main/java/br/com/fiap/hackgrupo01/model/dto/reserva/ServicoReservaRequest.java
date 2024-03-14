@@ -1,11 +1,11 @@
 package br.com.fiap.hackgrupo01.model.dto.reserva;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 @Data
 public class ServicoReservaRequest {
 
-    @NotNull
-    private Long id;
+    @Valid
+    private ServicoReservaRefreshDTO servico;
 }

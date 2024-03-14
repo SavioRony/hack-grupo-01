@@ -1,6 +1,5 @@
 package br.com.fiap.hackgrupo01.model.hospedagem;
 
-import br.com.fiap.hackgrupo01.model.reserva.Reserva;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +33,4 @@ public class Quarto {
     @JoinColumn(name = "predio_id")
     @JsonIgnore
     private Predio predio;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "quartos")
-    private List<Reserva> reserva;
 }

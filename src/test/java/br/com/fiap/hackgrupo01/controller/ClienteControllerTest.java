@@ -39,7 +39,7 @@ class ClienteControllerTest {
         clienteDTO.setDataNascimento("01/01/1990");
         clienteDTO.setEnderecoPaisOrigem("Brazil");
         clienteDTO.setTelefone("123456789");
-        clienteDTO.setPaisOrigem("Brazil");
+        clienteDTO.setPaisOrigem("Brasil");
     }
 
     @Test
