@@ -4,7 +4,8 @@ import br.com.fiap.hackgrupo01.model.reserva.Reserva;
 import br.com.fiap.hackgrupo01.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,13 +18,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     @Value("${send.mail.from}")
     private String from;
 
-    @Autowired
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
     public void enviarConfirmacaoReserva(Reserva reserva) {
         MimeMessage message = emailSender.createMimeMessage();
@@ -47,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(htmlContent, true);
             emailSender.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -62,7 +64,7 @@ public class EmailServiceImpl implements EmailService {
             }
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return contentBuilder.toString();
     }

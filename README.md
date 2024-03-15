@@ -1,3 +1,42 @@
+# 🐋 Rodanddo o projeto com Docker
+
+1 - Antes de qualquer coisa certifique-se de ter o Docker já instalado e configurado em sua maquina:
+- https://docs.docker.com/get-docker/
+
+2 -  Abra o terminal no caminho do arquivo ``docker-compose.yml``:
+
+3 -  Execulte o seguinte comando no terminal:
+```
+docker-compose up
+```
+4 - Para acessar a ferramenta phpMyAdmin para ter acesso ao banco de dados basta inserir a url no seu navegador de preferência:
+```
+http://localhost:8000/
+```
+6 - Entre com usuario e senha configurado no ``application.yml`` que esta como padrão:
+- Usuario: ``root``
+- Senha: ``root``
+
+# 📗 Acessando o Swagger
+A documentação da API da nossa aplicação está disponível através do Swagger,
+uma interface interativa que permite explorar e testar os endpoints da API.
+Siga os passos abaixo para acessar o Swagger:
+
+1 - Certifique-se de que a aplicação esteja em execução.
+
+2 - Abra seu navegador da web favorito.
+
+3 - Acesse a URL:
+```
+http://localhost:8080/swagger-ui/index.html#/
+```
+Agora você está na interface do Swagger, onde pode ver a lista de todos os endpoints disponíveis, seus detalhes e parâmetros. Explore e teste os endpoints interativamente.
+
+# 📋 Cobertura de testes
+![Descrição da Imagem](src/main/resources/static/Cobertura de teste.png)
+
+# 🔳 Comandos CURL
+
 ## Gestão de quartos
 
 ### Cadastro de hospedagem
